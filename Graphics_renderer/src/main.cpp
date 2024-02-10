@@ -2,6 +2,8 @@
 #include <glew.h>
 #include <glfw3.h>
 #include "../headers/VertexBuffer.h"
+#include "../headers/VertexArray.h"
+#include "../headers/VertexArrayLayout.h"
 
 #define log(x) std::cout << x << std::endl;
 
@@ -13,6 +15,11 @@ int main(void)
     /* Initialize the library */
     if (!glfwInit())
         return -1;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(480,480, "Hello World", NULL, NULL);
@@ -47,7 +54,12 @@ int main(void)
        
     
     VertexBuffer vbo(verteces,sizeof(verteces));
+   
 
+    unsigned int vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void *)0);
 
 
 
