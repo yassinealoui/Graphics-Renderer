@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "glew.h"
 
 #define  log(x) std::cout << x << std::endl;
 class VertexArray
@@ -8,6 +9,7 @@ class VertexArray
 private:
 	unsigned int m_RendererID;
 public:
+	VertexArrayLayout m_layout;
 	VertexArray();
 	~VertexArray();
 
@@ -17,9 +19,7 @@ public:
 
 };
 
-
 //glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void*)0);
-
 
 class VertexArrayLayout
 {
@@ -29,24 +29,34 @@ public:
 	std::vector<AttributeConfig> attributes;
 
 	template<typename T>
-	int addAttribute(unsigned int size)
+	unsigned int addAttribute(unsigned int size)
 	{
 		log("AttributeConfig::addAttribute -> unhandled type");
 		ASSERT(false);
 	}
 
 	template<>
-	int addAttribute<float>(unsigned int size)
+	unsigned int addAttribute<float>(unsigned int size)
 	{
 		AttributeConfig attribConfig(size, GL_FLOAT, GL_FALSE);
 		attributes.push_back(attribConfig);
 		m_stride += sizeof(float) * size;
 
-		return attributes.size() - 1; //return the index of attribute;
+		unsigned int attribIndex = attributes.size() - 1;
+		glVertexAttribPointer(attribIndex, 
+			attribConfig.m_size, 
+			attribConfig.m_type,
+			attribConfig.m_normalized,
+			sizeof(float) * attribConfig.m_size,
+			(const void*)0
+		);
+		return attribIndex;
 	}
 
-
-
+	void enableAttribute(unsigned int index)
+	{
+		glEnableVertexAttribArray(index);
+	}
 
 };
 

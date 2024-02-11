@@ -3,9 +3,12 @@
 #include <glfw3.h>
 #include "../headers/VertexBuffer.h"
 #include "../headers/VertexArray.h"
-#include "../headers/VertexArrayLayout.h"
 
 #define log(x) std::cout << x << std::endl;
+
+/*TEST*/
+// TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
+
 
 
 int main(void)
@@ -55,11 +58,13 @@ int main(void)
     
     VertexBuffer vbo(verteces,sizeof(verteces));
    
+    VertexArray vao;
+    vao.Bind();
+    unsigned int attrib_index = vao.m_layout.addAttribute<float>(2);
+    vao.m_layout.enableAttribute(attrib_index);
 
-    unsigned int vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (const void *)0);
+
+
 
 
 
