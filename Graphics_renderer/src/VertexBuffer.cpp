@@ -2,23 +2,23 @@
 #include "../headers/common.h"
 
 //create assure Binding
-VertexBuffer::VertexBuffer(const void* data,const int size) 
+VertexBuffer::VertexBuffer(const void* data) 
 {
-	glGenBuffers(1, &m_RendererID);
+	glCall(glGenBuffers(1, &m_RendererID));
 	Bind();
-	glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
+	glCall(glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW));
 }
 VertexBuffer::~VertexBuffer()
 {
-	glDeleteBuffers(1, &m_RendererID);
+	glCall(glDeleteBuffers(1, &m_RendererID));
 }
 
 void VertexBuffer::Bind() const 
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 }
 void VertexBuffer::UnBind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 

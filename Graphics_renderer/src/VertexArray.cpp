@@ -5,23 +5,23 @@
 
 VertexArray::VertexArray()
 {
-    glGenVertexArrays(1, &m_RendererID);
+    glCall(glGenVertexArrays(1, &m_RendererID));
     Bind();
 }
 
 
 VertexArray::~VertexArray()
 {
-    glDeleteVertexArrays(1, &m_RendererID);
+    glCall(glDeleteVertexArrays(1, &m_RendererID));
 }
 
 void VertexArray::Bind() const
 {
-    glBindVertexArray(m_RendererID);
+    glCall(glBindVertexArray(m_RendererID));
 }
 
 void VertexArray::UnBind() const
 {
-    glBindVertexArray(0);
+    glCall(glBindVertexArray(0));
 }
 

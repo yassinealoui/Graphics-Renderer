@@ -2,9 +2,11 @@
 #include <glew.h>
 #include <glfw3.h>
 #include "../headers/VertexBuffer.h"
+#include "../headers/IndexBuffer.h"
 #include "../headers/VertexArray.h"
+#include "../headers/common.h"
 
-#define log(x) std::cout << x << std::endl;
+#define Log(x) std::cout << x << std::endl;
 
 /*TEST*/
 // TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
@@ -38,9 +40,9 @@ int main(void)
     GLenum err = glewInit();
     if (GLEW_OK != err)
     {
-       log("glew initialization failed !")
+       Log("glew initialization failed !")
     }
-    log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
+    Log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
 
     float verteces[] =
     {
@@ -56,30 +58,40 @@ int main(void)
     };
        
     
-    VertexBuffer vbo(verteces,sizeof(verteces));
+    VertexBuffer vbo(verteces);
    
     VertexArray vao;
     vao.Bind();
     unsigned int attrib_index = vao.m_layout.addAttribute<float>(2);
     vao.m_layout.enableAttribute(attrib_index);
 
+    IndexBuffer ibo(indeces,
+        sizeof(indeces)/sizeof(indeces[0])
+    );
 
 
 
 
+    vao.Bind();
+    vbo.Bind();
+    ibo.Bind();
 
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        glCall(glClear(GL_COLOR_BUFFER_BIT));
+
+
+        glCall(glDrawArrays(GL_TRIANGLES, 0, ibo.getCount()));
+
 
         /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+        glCall(glfwSwapBuffers(window));
 
         /* Poll for and process events */
-        glfwPollEvents();
+        glCall(glfwPollEvents());
     }
 
     glfwTerminate();
