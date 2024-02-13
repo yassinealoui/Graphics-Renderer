@@ -1,31 +1,12 @@
-#pragma once
+#include "../headers/GLDebugUtils.h"
 #include "glew.h"
-#include <string>
-#include <iostream>
+
 
 #define Log(x) std::cout << x << std::endl;
-#define ASSERT(x) if(!(x)) __debugbreak()
-
-#define glCall(x) \
-	clearGLErrors(); \
-	x ;\
-	glCheckErrors(#x,__FILE__,__LINE__);
-
-
-
-
-
-
-
-enum Message {
-	INFO,
-	WARNING,
-	ERROR
-};
 
 void print(Message type, const std::string& msg)
 {
-	std::string content ="";
+	std::string content = "";
 	switch (type)
 	{
 	case Message::INFO: content += "[INFO]";
@@ -40,8 +21,6 @@ void print(Message type, const std::string& msg)
 
 	Log(content << " " << msg);
 }
-
-
 
 
 void clearGLErrors()
@@ -77,7 +56,7 @@ const std::string createglErrorMessage(const unsigned int errorCode,
 
 
 
-void glCheckErrors(const std::string functionName , const char* file, const int line)
+void glCheckErrors(const std::string functionName, const char* file, const int line)
 {
 	unsigned int errorCode = glGetError();
 	while (errorCode != GL_NO_ERROR) {
@@ -85,12 +64,6 @@ void glCheckErrors(const std::string functionName , const char* file, const int 
 		print(Message::ERROR, err_msg);
 		ASSERT(false);
 		errorCode = glGetError();
-	} 
+	}
 
 }
-
-
-
-
-
-

@@ -1,5 +1,8 @@
 #include "../headers/VertexArrayLayout.h"
-#include "../headers/common.h"
+#include "../headers/GLDebugUtils.h"
+#include "glew.h"
+
+#define Log(x) std::cout << x << std::endl;
 
 
 template<typename T>

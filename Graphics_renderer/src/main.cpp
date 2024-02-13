@@ -2,9 +2,10 @@
 #include <glew.h>
 #include <glfw3.h>
 #include "../headers/VertexBuffer.h"
-#include "../headers/IndexBuffer.h"
 #include "../headers/VertexArray.h"
-#include "../headers/common.h"
+#include "../headers/IndexBuffer.h"
+#include "../headers/GLDebugUtils.h"
+
 
 #define Log(x) std::cout << x << std::endl;
 
