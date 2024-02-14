@@ -5,6 +5,7 @@
 #include "../headers/VertexArray.h"
 #include "../headers/IndexBuffer.h"
 #include "../headers/GLDebugUtils.h"
+#include "../headers/Shader.h"
 
 
 #define Log(x) std::cout << x << std::endl;
@@ -69,6 +70,10 @@ int main(void)
     IndexBuffer ibo(indeces,
         sizeof(indeces)/sizeof(indeces[0])
     );
+
+    std::string path = "resources/shader/shader.txt";
+    Shader shader(path);
+
 
 
 

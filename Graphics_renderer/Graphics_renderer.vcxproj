@@ -145,9 +145,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\GLDebugUtils.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
     <ClCompile Include="src\VertexArrayLayout.cpp" />
     <ClCompile Include="src\VertexBuffer.cpp" />
@@ -155,9 +157,14 @@
   <ItemGroup>
     <ClInclude Include="headers\GLDebugUtils.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
+    <ClInclude Include="headers\Shader.h" />
+    <ClInclude Include="headers\Utils.h" />
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexArrayLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\shader\shader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
