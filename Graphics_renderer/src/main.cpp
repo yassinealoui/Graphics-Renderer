@@ -59,11 +59,10 @@ int main(void)
            2 , 3 , 1 // second triagnle
     };
        
-    
-    VertexBuffer vbo(verteces);
-   
     VertexArray vao;
     vao.Bind();
+    VertexBuffer vbo(verteces);
+    vbo.Bind();
     unsigned int attrib_index = vao.m_layout.addAttribute<float>(2);
     vao.m_layout.enableAttribute(attrib_index);
 
@@ -71,16 +70,20 @@ int main(void)
         sizeof(indeces)/sizeof(indeces[0])
     );
 
-    std::string path = "resources/shader/shader.txt";
+    std::string path = "resources/shader/shader.shader";
     Shader shader(path);
 
 
 
-
+    shader.UnBind();
+    vao.UnBind();
+    vbo.UnBind();
+    ibo.UnBind();
 
     vao.Bind();
     vbo.Bind();
     ibo.Bind();
+    shader.Bind();
 
 
     /* Loop until the user closes the window */

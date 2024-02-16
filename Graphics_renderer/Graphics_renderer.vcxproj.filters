@@ -64,6 +64,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="resources\shader\shader.txt" />
+    <Text Include="resources\shader\shader.shader" />
   </ItemGroup>
 </Project>

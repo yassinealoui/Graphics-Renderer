@@ -12,17 +12,30 @@ Shader::Shader(const std::string& path)
 {
 	std::string vertexShaderSource;
 	std::string fragmentShaderSource;
-	setShaders(path, vertexShaderSource, fragmentShaderSource);
+	setShadersources(path, vertexShaderSource, fragmentShaderSource);
+	unsigned int vs_c = CompileShader(ShaderType::VERTEX, vertexShaderSource);
+	unsigned int fs_c = CompileShader(ShaderType::FRAGMENT, fragmentShaderSource);
 	
-	unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
-	const char* vss = vertexShaderSource.c_str();
-	glShaderSource(vs, 1, &vss, nullptr);
-	glCompileShader(vs);
-	
+	glCall(m_renderID = glCreateProgram());
+	glCall(glAttachShader(m_renderID, vs_c));
+	glCall(glAttachShader(m_renderID, fs_c));
 
-	
-	//compile
-	//add to program
+	glCall(glLinkProgram(m_renderID));
+
+	/*int success;
+	glGetProgramiv(m_renderID, GL_LINK_STATUS, &success);
+	if (!success) {
+		char infoLog[512];
+		glGetProgramInfoLog(m_renderID, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}*/
+
+
+	glCall(glValidateProgram(m_renderID));
+
+	glCall(glDeleteShader(vs_c));
+	glCall(glDeleteShader(fs_c));
+
 }
 
 Shader::~Shader()
@@ -41,15 +54,7 @@ void Shader::UnBind()
 }
 
 
-enum ShaderType
-{
-	VERTEX,
-	FRAGMENT,
-	NONE
-};
-
-
-void Shader::setShaders(const std::string& path , std::string& vertexShader, std::string& fragementShader)
+void Shader::setShadersources(const std::string& path , std::string& vertexShader, std::string& fragementShader)
 {
 	std::ifstream inputFile(path);
 	
@@ -87,5 +92,66 @@ void Shader::setShaders(const std::string& path , std::string& vertexShader, std
 			}
 		}
 	}
+
+}
+
+
+std::string enumToString(ShaderType value) {
+	switch (value) {
+	case VERTEX:
+		return "VERTEX SHADER";
+	case FRAGMENT:
+		return "FRAGMENT SHADER";
+	default:
+		return "UNKNOWN SHADER TYPE";
+	}
+}
+
+
+
+unsigned int Shader::CompileShader(ShaderType type,const std::string& source)
+{
+	unsigned int shaderGLType;
+	if (type == ShaderType::VERTEX)
+	{
+		shaderGLType = GL_VERTEX_SHADER;
+	}
+	else if (type == ShaderType::FRAGMENT)
+	{
+		shaderGLType = GL_FRAGMENT_SHADER;
+	}
+	else
+	{
+		print(Message::ERROR, "no shader type specified [None]");
+		ASSERT(false);
+	}
+
+
+	glCall(unsigned int shader = glCreateShader(shaderGLType));
+	const char* source_ptr = source.c_str();
+	glCall(glShaderSource(shader, 1, &source_ptr, nullptr));
+	glCall(glCompileShader(shader));
+
+
+	int success;
+	glCall(glGetShaderiv(shader, GL_COMPILE_STATUS,&success));
+	if (success == GL_FALSE)
+	{
+		int logLength;
+		glCall(glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength));
+		char* infoLog = (char *)alloca(sizeof(char) * logLength);
+		glCall(glGetShaderInfoLog(shader, logLength, &logLength, infoLog));
+
+		print(Message::ERROR, std::string(infoLog));
+		glDeleteShader(shader);
+		return 0;
+	}
+	else
+	{
+		print(Message::INFO, enumToString(type) + " compiled with success ");
+	}
+
+
+	return shader;
 
 }

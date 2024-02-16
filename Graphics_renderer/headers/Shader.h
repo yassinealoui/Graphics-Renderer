@@ -1,6 +1,16 @@
 #pragma once
 #include <string>
 
+
+enum ShaderType
+{
+	VERTEX,
+	FRAGMENT,
+	NONE
+};
+
+
+
 class Shader
 {
 private:
@@ -12,5 +22,6 @@ public:
 
 	void Bind();
 	void UnBind();
-	static void setShaders(const std::string& path, std::string& vertexShader, std::string& fragementShader) ;
+	static void setShadersources(const std::string& path, std::string& vertexShader, std::string& fragementShader) ;
+	unsigned int CompileShader(ShaderType type, const std::string& source);
 };
