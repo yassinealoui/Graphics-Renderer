@@ -7,14 +7,14 @@
 #include "../headers/GLDebugUtils.h"
 #include "../headers/Shader.h"
 
-
+#define Enable  0;
 #define Log(x) std::cout << x << std::endl;
 
 /*TEST*/
 // TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
 
 
-
+#if Enable == 1
 int main(void)
 {
     GLFWwindow* window;
@@ -58,6 +58,12 @@ int main(void)
            0 , 1 , 2, // first triangle
            2 , 3 , 1 // second triagnle
     };
+
+    
+
+
+
+
    /*    
     VertexArray vao;
     vao.Bind();
@@ -106,3 +112,4 @@ int main(void)
     glfwTerminate();
     return 0;
 }
+#endif
