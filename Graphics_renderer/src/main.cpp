@@ -58,7 +58,7 @@ int main(void)
            0 , 1 , 2, // first triangle
            2 , 3 , 1 // second triagnle
     };
-       
+   /*    
     VertexArray vao;
     vao.Bind();
     VertexBuffer vbo(verteces);
@@ -83,7 +83,7 @@ int main(void)
     vao.Bind();
     vbo.Bind();
     ibo.Bind();
-    shader.Bind();
+    shader.Bind();*/
 
 
     /* Loop until the user closes the window */
@@ -93,7 +93,7 @@ int main(void)
         glCall(glClear(GL_COLOR_BUFFER_BIT));
 
 
-        glCall(glDrawArrays(GL_TRIANGLES, 0, ibo.getCount()));
+        //glCall(glDrawArrays(GL_TRIANGLES, 0, ibo.getCount()));
 
 
         /* Swap front and back buffers */
