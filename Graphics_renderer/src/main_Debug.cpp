@@ -1,7 +1,12 @@
 #include <iostream>
 #include <glew.h>
 #include <glfw3.h>
+#include "../headers/VertexArray.h"
+#include "../headers/VertexBuffer.h"
 
+#define Enable  0;
+
+#if Enable == 1
 const char* vertexShaderSource = R"(
 #version 330 core
 layout (location = 0) in vec3 aPos;
@@ -61,16 +66,22 @@ int main()
     };
 
     // Create Vertex Array Object (VAO), Vertex Buffer Object (VBO), and Element Buffer Object (EBO)
-    GLuint VAO, VBO;
+   /* GLuint VAO;
     glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);*/
+    
+    VertexArray vao;
+    vao.Bind();
+
+  /*  uint32_t VBO;
     glGenBuffers(1, &VBO);
-
-    // Bind VAO
-    glBindVertexArray(VAO);
-
-    // Bind VBO and copy vertex data to it
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);*/
+
+    VertexBuffer vbo(vertices,sizeof(vertices));
+    vbo.Bind();
+   
+
 
     // Set vertex attribute pointers
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -136,7 +147,7 @@ int main()
         glUseProgram(shaderProgram);
 
         // Draw the triangle
-        glBindVertexArray(VAO);
+        vao.Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // Swap the front and back buffers
@@ -144,8 +155,8 @@ int main()
     }
 
     // Clean up resources
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+   // glDeleteVertexArrays(1, &VAO);
+    //glDeleteBuffers(1, &VBO);
     glDeleteProgram(shaderProgram);
 
     // Terminate GLFW
@@ -153,3 +164,4 @@ int main()
 
     return 0;
 }
+#endif
