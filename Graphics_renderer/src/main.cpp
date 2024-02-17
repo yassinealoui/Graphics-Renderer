@@ -7,14 +7,15 @@
 #include "../headers/GLDebugUtils.h"
 #include "../headers/Shader.h"
 
-
+#define Enable  1;
 #define Log(x) std::cout << x << std::endl;
 
 /*TEST*/
 // TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
-
-
-
+//TODO : replace the unsigned int with uint32_t (more modern and clear)(c++11) include cstdint [decided based on compatibility]
+//TODO : invert the place of priavte and public in your code so that the people reads the public first 
+//TODO : use glDebugMessageCallBack() / glEnable(GL_DEBUG_OUTPUT) / glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS) instead of glCall
+#if Enable == 1
 int main(void)
 {
     GLFWwindow* window;
@@ -58,10 +59,11 @@ int main(void)
            0 , 1 , 2, // first triangle
            2 , 3 , 1 // second triagnle
     };
+
        
     VertexArray vao;
     vao.Bind();
-    VertexBuffer vbo(verteces);
+    VertexBuffer vbo(verteces,sizeof(verteces));
     vbo.Bind();
     unsigned int attrib_index = vao.m_layout.addAttribute<float>(2);
     vao.m_layout.enableAttribute(attrib_index);
@@ -106,3 +108,4 @@ int main(void)
     glfwTerminate();
     return 0;
 }
+#endif

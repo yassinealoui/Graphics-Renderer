@@ -3,11 +3,11 @@
 #include "glew.h"
 
 //create assure Binding
-VertexBuffer::VertexBuffer(const void* data) 
+VertexBuffer::VertexBuffer(const void* data, int size) 
 {
 	glCall(glGenBuffers(1, &m_RendererID));
 	Bind();
-	glCall(glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW));
+	glCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 }
 VertexBuffer::~VertexBuffer()
 {
