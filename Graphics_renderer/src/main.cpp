@@ -62,11 +62,13 @@ int main(void)
 
        
     VertexArray vao;
-    vao.Bind();
+
     VertexBuffer vbo(verteces,sizeof(verteces));
-    vbo.Bind();
-    unsigned int attrib_index = vao.m_layout.addAttribute<float>(2);
-    vao.m_layout.enableAttribute(attrib_index);
+ 
+    VertexArrayLayout layout;
+    layout.addAttribute<float>("position", 2);
+    vao.applyLayout(vbo, layout);
+
 
     IndexBuffer ibo(indeces,
         sizeof(indeces)/sizeof(indeces[0])
