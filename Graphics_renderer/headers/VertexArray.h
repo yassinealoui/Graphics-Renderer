@@ -1,7 +1,7 @@
 #pragma once
 
 #include "VertexArrayLayout.h"
-
+#include "VertexBuffer.h"
 #define  Log(x) std::cout << x << std::endl;
 class VertexArray
 {
@@ -14,6 +14,8 @@ public:
 
 	void Bind() const;
 	void UnBind() const;
+
+	void applyLayout(const VertexBuffer& vbo , const VertexArrayLayout& layout) const;
 
 };
 

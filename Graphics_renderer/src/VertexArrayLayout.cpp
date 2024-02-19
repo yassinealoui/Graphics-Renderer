@@ -26,25 +26,39 @@ unsigned int VertexArrayLayout::addAttribute<float>(std::string attrib_name,unsi
 	return attribIndex;
 }
 
-void VertexArrayLayout::enableAttribute(std::string attrib_name)
+void VertexArrayLayout::enableAttribute(std::string attrib_name) const
 {
-	unsigned int attrib_index = m_attributes_cache[attrib_name];
-	//understand the end() and find() return types and why this if 
-	if (m_attributes_cache.find(attrib_name) == m_attributes_cache.end())
+	auto it = m_attributes_cache.find(attrib_name);
+	if (it == m_attributes_cache.end())
 	{
 		Log("void VertexArrayLayout::enableAttribute(std::string attrib_name) -> ** attrib_name ** is not a registred attribute name");
 		ASSERT(false);
+		return;
 	}
 	
+	unsigned int attrib_index = it->second;
+	enableAttribute(attrib_index);
+}
 
-	glCall(glVertexAttribPointer(attribIndex,
+void VertexArrayLayout::enableAttribute(unsigned int attrib_index) const
+{
+	AttributeConfig attribConfig = attributes[attrib_index];
+
+	glCall(glVertexAttribPointer(attrib_index,
 		attribConfig.m_size,
 		attribConfig.m_type,
 		attribConfig.m_normalized,
 		sizeof(float) * attribConfig.m_size,
 		(const void*)0
 	));
-	glCall(glEnableVertexAttribArray(index));
+	glCall(glEnableVertexAttribArray(attrib_index));
+}
+
+void VertexArrayLayout::enableAllAttributes() const
+{
+	for (const auto& attrib : m_attributes_cache) {
+		enableAttribute(attrib.second);
+	}
 }
 
 

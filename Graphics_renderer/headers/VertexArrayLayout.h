@@ -28,7 +28,11 @@ public:
 	template<>
 	unsigned int addAttribute<float>(std::string attrib_name, unsigned int size);
 
-	void enableAttribute(std::string attrib_name);
+	void enableAttribute(std::string attrib_name) const;
+
+	void enableAttribute(unsigned int attrib_index) const;
+
+	void enableAllAttributes() const;
 
 };
 

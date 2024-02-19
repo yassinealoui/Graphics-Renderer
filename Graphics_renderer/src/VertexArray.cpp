@@ -23,3 +23,9 @@ void VertexArray::UnBind() const
     glCall(glBindVertexArray(0));
 }
 
+void VertexArray::applyLayout(const VertexBuffer& vbo, const VertexArrayLayout& layout) const
+{
+    Bind();//bind the vao
+    vbo.Bind(); // bind the vbo
+    layout.enableAllAttributes();
+}
