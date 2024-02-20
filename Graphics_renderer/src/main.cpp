@@ -46,7 +46,8 @@ int main(void)
        Log("glew initialization failed !")
     }
     Log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
-
+    // number of screen updates to wait to call the next drawcall
+     glfwSwapInterval(5);
     float verteces[] =
     {
         -0.5 , 0  , // 0
@@ -76,6 +77,7 @@ int main(void)
 
     std::string path = "resources/shader/shader.shader";
     Shader shader(path);
+    shader.setUniform4f("u_color", 0.9f, 0.7f, 0.2f, 1);
 
 
 
@@ -97,6 +99,7 @@ int main(void)
         glCall(glClear(GL_COLOR_BUFFER_BIT));
 
 
+        shader.setUniform_random_4f("u_color");
         glCall(glDrawArrays(GL_TRIANGLES, 0, ibo.getCount()));
 
 

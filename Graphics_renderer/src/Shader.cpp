@@ -21,7 +21,7 @@ Shader::Shader(const std::string& path)
 	glCall(glAttachShader(m_renderID, fs_c));
 
 	glCall(glLinkProgram(m_renderID));
-
+	
 	/*int success;
 	glGetProgramiv(m_renderID, GL_LINK_STATUS, &success);
 	if (!success) {
@@ -43,12 +43,12 @@ Shader::~Shader()
 	glCall(glDeleteShader(m_renderID));
 }
 
-void Shader::Bind()
+void Shader::Bind() const
 {
 	glCall(glUseProgram(m_renderID));
 }
 
-void Shader::UnBind()
+void Shader::UnBind() const
 {
 	glCall(glUseProgram(0));
 }
@@ -153,5 +153,27 @@ unsigned int Shader::CompileShader(ShaderType type,const std::string& source)
 
 
 	return shader;
+
+}
+
+void Shader::setUniform4f(const std::string& u_name, float v0, float v1, float v2, float v3) const
+{
+	Bind(); // use the program
+	unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str());
+	glUniform4f(location, v0, v1, v2, v3);
+
+}
+
+void Shader::setUniform_random_4f(const std::string& u_name) const
+{
+	Bind(); // use the program
+	unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str());
+
+	float v0 = mathUtils::getRandomFloat(0,1);
+	float v1 = mathUtils::getRandomFloat(0,1);
+	float v2 = mathUtils::getRandomFloat(0,1);
+	float v3 = mathUtils::getRandomFloat(0,1);
+
+	glUniform4f(location, v0, v1, v2, v3);
 
 }
