@@ -18,12 +18,12 @@ void VertexArray::Bind() const
     glCall(glBindVertexArray(m_RendererID));
 }
 
-void VertexArray::UnBind() const
+void VertexArray::UnBind() 
 {
     glCall(glBindVertexArray(0));
 }
 
-void VertexArray::applyLayout(const VertexBuffer& vbo, const VertexArrayLayout& layout) const
+void VertexArray::addBuffer(const VertexBuffer& vbo, const VertexArrayLayout& layout) const
 {
     Bind();//bind the vao
     vbo.Bind(); // bind the vbo

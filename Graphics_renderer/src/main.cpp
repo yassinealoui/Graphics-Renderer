@@ -6,6 +6,8 @@
 #include "../headers/IndexBuffer.h"
 #include "../headers/GLDebugUtils.h"
 #include "../headers/Shader.h"
+#include "../headers/Renderer.h"
+#include "main.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
@@ -15,6 +17,8 @@
 //TODO : replace the unsigned int with uint32_t (more modern and clear)(c++11) include cstdint [decided based on compatibility]
 //TODO : invert the place of priavte and public in your code so that the people reads the public first 
 //TODO : use glDebugMessageCallBack() / glEnable(GL_DEBUG_OUTPUT) / glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS) instead of glCall
+//TODO : lambda functions
+
 #if Enable == 1
 int main(void)
 {
@@ -47,7 +51,7 @@ int main(void)
     }
     Log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
     // number of screen updates to wait to call the next drawcall
-     glfwSwapInterval(5);
+     glfwSwapInterval(10);
     float verteces[] =
     {
         -0.5 , 0  , // 0
@@ -68,11 +72,10 @@ int main(void)
  
     VertexArrayLayout layout;
     layout.addAttribute<float>("position", 2);
-    vao.applyLayout(vbo, layout);
-
-
+    vao.addBuffer(vbo, layout);
+   
     IndexBuffer ibo(indeces,
-        sizeof(indeces)/sizeof(indeces[0])
+        sizeof(indeces) / sizeof(indeces[0])
     );
 
     std::string path = "resources/shader/shader.shader";
@@ -81,26 +84,13 @@ int main(void)
 
 
 
-    shader.UnBind();
-    vao.UnBind();
-    vbo.UnBind();
-    ibo.UnBind();
-
-    vao.Bind();
-    vbo.Bind();
-    ibo.Bind();
-    shader.Bind();
-
-
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-        /* Render here */
-        glCall(glClear(GL_COLOR_BUFFER_BIT));
-
 
         shader.setUniform_random_4f("u_color");
-        glCall(glDrawArrays(GL_TRIANGLES, 0, ibo.getCount()));
+        Renderer::Draw(vao, ibo, shader);
+       
 
 
         /* Swap front and back buffers */
