@@ -13,6 +13,6 @@ public:
 	unsigned int getCount() const { return m_count; };
 	
 	void Bind() const;
-	void UnBind() const;
+	static void UnBind();
 };
 

@@ -13,9 +13,9 @@ public:
 
 
 	void Bind() const;
-	void UnBind() const;
+	static void UnBind();
 
-	void applyLayout(const VertexBuffer& vbo , const VertexArrayLayout& layout) const;
+	void addBuffer(const VertexBuffer& vbo , const VertexArrayLayout& layout) const;
 
 };
 

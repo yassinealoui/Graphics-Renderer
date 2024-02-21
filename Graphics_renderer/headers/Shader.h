@@ -21,7 +21,7 @@ public:
 	~Shader();
 
 	void Bind() const;
-	void UnBind() const;
+	static void UnBind();
 	static void setShadersources(const std::string& path, std::string& vertexShader, std::string& fragementShader);
 	unsigned int CompileShader(ShaderType type, const std::string& source);
 

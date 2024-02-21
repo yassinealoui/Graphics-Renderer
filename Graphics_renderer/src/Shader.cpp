@@ -48,7 +48,7 @@ void Shader::Bind() const
 	glCall(glUseProgram(m_renderID));
 }
 
-void Shader::UnBind() const
+void Shader::UnBind()
 {
 	glCall(glUseProgram(0));
 }
