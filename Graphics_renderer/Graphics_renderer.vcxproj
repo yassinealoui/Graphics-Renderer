@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="src\main_Debug.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Utils.cpp" />
     <ClCompile Include="src\GLDebugUtils.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
@@ -161,14 +162,19 @@
     <ClInclude Include="headers\IndexBuffer.h" />
     <ClInclude Include="headers\Renderer.h" />
     <ClInclude Include="headers\Shader.h" />
+    <ClInclude Include="headers\Texture.h" />
     <ClInclude Include="headers\Utils.h" />
     <ClInclude Include="headers\VertexArray.h" />
     <ClInclude Include="headers\VertexArrayLayout.h" />
     <ClInclude Include="headers\VertexBuffer.h" />
     <ClInclude Include="src\main.h" />
+    <ClInclude Include="vendors\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shader\shader.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\images\kaguya.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -143,7 +143,7 @@ unsigned int Shader::CompileShader(ShaderType type,const std::string& source)
 		glCall(glGetShaderInfoLog(shader, logLength, &logLength, infoLog));
 
 		print(Message::ERROR, std::string(infoLog));
-		glDeleteShader(shader);
+		glCall(glDeleteShader(shader));
 		return 0;
 	}
 	else
@@ -159,21 +159,32 @@ unsigned int Shader::CompileShader(ShaderType type,const std::string& source)
 void Shader::setUniform4f(const std::string& u_name, float v0, float v1, float v2, float v3) const
 {
 	Bind(); // use the program
-	unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str());
-	glUniform4f(location, v0, v1, v2, v3);
+	glCall(unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str()));
+	glCall(glUniform4f(location, v0, v1, v2, v3));
 
+}
+
+void Shader::setUniform1i(const std::string& u_name, unsigned int value) const 
+{
+	Bind(); // use the program
+	glCall(unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str()));
+	glCall(glUniform1i(location, value));
 }
 
 void Shader::setUniform_random_4f(const std::string& u_name) const
 {
 	Bind(); // use the program
-	unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str());
-
+	glCall(int location = glGetUniformLocation(m_renderID, u_name.c_str()));
+	if (location == -1)
+	{
+		Log("uniform \"" + u_name + "\" doesn't exsits !");
+		ASSERT(false);
+	}
 	float v0 = mathUtils::getRandomFloat(0,1);
 	float v1 = mathUtils::getRandomFloat(0,1);
 	float v2 = mathUtils::getRandomFloat(0,1);
 	float v3 = mathUtils::getRandomFloat(0,1);
 
-	glUniform4f(location, v0, v1, v2, v3);
+	glCall(glUniform4f(location, v0, v1, v2, v3));
 
 }

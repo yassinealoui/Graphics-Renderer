@@ -8,9 +8,12 @@
 #include "../headers/Shader.h"
 #include "../headers/Renderer.h"
 #include "main.h"
+#include "../headers/Texture.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
+#define imageFilePath "resources/images/kaguya.png"
+
 
 /*TEST*/
 // TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
@@ -18,6 +21,10 @@
 //TODO : invert the place of priavte and public in your code so that the people reads the public first 
 //TODO : use glDebugMessageCallBack() / glEnable(GL_DEBUG_OUTPUT) / glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS) instead of glCall
 //TODO : lambda functions
+
+
+//problem : adding the texture coordinates , messed up the positions
+
 
 #if Enable == 1
 int main(void)
@@ -54,10 +61,10 @@ int main(void)
      glfwSwapInterval(10);
     float verteces[] =
     {
-        -0.5 , 0  , // 0
-        -0.5 , 0.5, // 1
-         0.5 , 0  , // 2
-         0.5 , 0.5  // 3
+        -0.5 , 0  , 0 , 0, // 0
+        -0.5 , 0.5, 0 , 1, // 1
+         0.5 , 0  , 1 , 0, // 2
+         0.5 , 0.5, 1 , 1 // 3
     };
 
     unsigned int indeces[]{
@@ -72,15 +79,20 @@ int main(void)
  
     VertexArrayLayout layout;
     layout.addAttribute<float>("position", 2);
+    layout.addAttribute<float>("texture", 2);
     vao.addBuffer(vbo, layout);
    
     IndexBuffer ibo(indeces,
         sizeof(indeces) / sizeof(indeces[0])
     );
 
+    unsigned int texSlot = 0;
+    Texture texture(imageFilePath,texSlot);
+
     std::string path = "resources/shader/shader.shader";
     Shader shader(path);
     shader.setUniform4f("u_color", 0.9f, 0.7f, 0.2f, 1);
+    shader.setUniform1i("u_Texture", texSlot);
 
 
 
@@ -88,7 +100,7 @@ int main(void)
     while (!glfwWindowShouldClose(window))
     {
 
-        shader.setUniform_random_4f("u_color");
+        //shader.setUniform_random_4f("u_color");
         Renderer::Draw(vao, ibo, shader);
        
 

@@ -15,9 +15,11 @@ unsigned int VertexArrayLayout::addAttribute(std::string attrib_name,unsigned in
 template<>
 unsigned int VertexArrayLayout::addAttribute<float>(std::string attrib_name,unsigned int size)
 {
+
 	AttributeConfig attribConfig(size, GL_FLOAT, GL_FALSE);
-	attributes.push_back(attribConfig);
+	attribConfig.m_offset = m_stride;
 	m_stride += sizeof(float) * size;
+	attributes.push_back(attribConfig);
 
 	unsigned int attribIndex = attributes.size() - 1;
 	m_attributes_cache[attrib_name] = attribIndex;  //store the attribute index to access by name
@@ -43,13 +45,12 @@ void VertexArrayLayout::enableAttribute(std::string attrib_name) const
 void VertexArrayLayout::enableAttribute(unsigned int attrib_index) const
 {
 	AttributeConfig attribConfig = attributes[attrib_index];
-
 	glCall(glVertexAttribPointer(attrib_index,
 		attribConfig.m_size,
 		attribConfig.m_type,
 		attribConfig.m_normalized,
-		sizeof(float) * attribConfig.m_size,
-		(const void*)0
+		m_stride,
+		(const void*)attribConfig.m_offset
 	));
 	glCall(glEnableVertexAttribArray(attrib_index));
 }

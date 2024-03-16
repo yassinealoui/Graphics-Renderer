@@ -8,7 +8,7 @@ struct AttributeConfig
 	unsigned int m_size;
 	unsigned int m_type;
 	unsigned int m_normalized;
-
+	unsigned int m_offset;
 	AttributeConfig(unsigned int size, unsigned int type, unsigned int normalized);
 
 };
