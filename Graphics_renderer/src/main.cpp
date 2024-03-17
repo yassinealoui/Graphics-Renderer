@@ -9,21 +9,24 @@
 #include "../headers/Renderer.h"
 #include "main.h"
 #include "../headers/Texture.h"
+#include "../vendor/glm/glm.hpp"
+#include "../vendor/glm/gtc/matrix_transform.hpp"
+
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
 #define imageFilePath "resources/images/kaguya.png"
 
+#define ScreenWidth 480.0f
+#define ScreenHeight 672.0f
+#define nearPlane -1.0f
+#define farPlane 1.0f
 
 /*TEST*/
 // TEST 1 : try to execute glVertexAttribPointer without binding the vbo , just bind the vao
 //TODO : replace the unsigned int with uint32_t (more modern and clear)(c++11) include cstdint [decided based on compatibility]
 //TODO : invert the place of priavte and public in your code so that the people reads the public first 
 //TODO : use glDebugMessageCallBack() / glEnable(GL_DEBUG_OUTPUT) / glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS) instead of glCall
-//TODO : lambda functions
-
-
-//problem : adding the texture coordinates , messed up the positions
 
 
 #if Enable == 1
@@ -41,7 +44,7 @@ int main(void)
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(480,480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(ScreenWidth, ScreenHeight, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -61,10 +64,10 @@ int main(void)
      glfwSwapInterval(10);
     float verteces[] =
     {
-        -0.5 , 0  , 0 , 0, // 0
-        -0.5 , 0.5, 0 , 1, // 1
-         0.5 , 0  , 1 , 0, // 2
-         0.5 , 0.5, 1 , 1 // 3
+        -50 , 0  , 0 , 0, // 0
+        -50 , 100, 0 , 1, // 1
+         50 , 0  , 1 , 0, // 2
+         50 , 100, 1 , 1 // 3
     };
 
     unsigned int indeces[]{
@@ -95,6 +98,17 @@ int main(void)
     shader.setUniform1i("u_Texture", texSlot);
 
 
+    glm::mat4 mvp;
+
+    glm::mat4 proj = glm::ortho(-ScreenWidth / 2, 
+                                ScreenWidth / 2,
+                                -ScreenHeight / 2, 
+                                ScreenHeight / 2, 
+                                nearPlane, 
+                                farPlane);
+    
+    mvp = proj;
+    shader.setUniformMat4("u_MVP", mvp);
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
