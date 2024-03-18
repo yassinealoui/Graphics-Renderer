@@ -11,14 +11,14 @@
 #include "../headers/Texture.h"
 #include "../vendor/glm/glm.hpp"
 #include "../vendor/glm/gtc/matrix_transform.hpp"
-
+#include "../headers/Utils.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
 #define imageFilePath "resources/images/kaguya.png"
 
 #define ScreenWidth 480.0f
-#define ScreenHeight 672.0f
+#define ScreenHeight 480.0f
 #define nearPlane -1.0f
 #define farPlane 1.0f
 
@@ -98,7 +98,9 @@ int main(void)
     shader.setUniform1i("u_Texture", texSlot);
 
 
+    glm::mat4 identity = glm::mat4(1.0f);
     glm::mat4 mvp;
+
 
     glm::mat4 proj = glm::ortho(-ScreenWidth / 2, 
                                 ScreenWidth / 2,
@@ -107,7 +109,16 @@ int main(void)
                                 nearPlane, 
                                 farPlane);
     
-    mvp = proj;
+
+    glm::vec3 camera_translation(-100.0f, -50.0f, 0.0f);
+    glm::mat4 view = glm::translate(identity, camera_translation);
+
+    glm::vec3 geometry_translation(300.0f, 80.0f, 0.0f);
+    glm::mat4 model = glm::translate(identity, geometry_translation);
+
+
+
+    mvp = proj * view * model;
     shader.setUniformMat4("u_MVP", mvp);
 
     /* Loop until the user closes the window */
