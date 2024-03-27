@@ -1,24 +1,26 @@
 #include <iostream>
-#include <glew.h>
-#include <glfw3.h>
-#include "../headers/VertexBuffer.h"
-#include "../headers/VertexArray.h"
-#include "../headers/IndexBuffer.h"
-#include "../headers/GLDebugUtils.h"
-#include "../headers/Shader.h"
-#include "../headers/Renderer.h"
-#include "main.h"
-#include "../headers/Texture.h"
-#include "../vendor/glm/glm.hpp"
-#include "../vendor/glm/gtc/matrix_transform.hpp"
-#include "../headers/Utils.h"
+#include "GLEW/glew.h"
+#include "GLFW/glfw3.h"
+#include "VertexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "GLDebugUtils.h"
+#include "Shader.h"
+#include "Renderer.h"
+#include "Texture.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "Utils.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
 #define imageFilePath "resources/images/kaguya.png"
 
-#define ScreenWidth 480.0f
-#define ScreenHeight 480.0f
+#define ScreenWidth 640.0f
+#define ScreenHeight 640.0f
 #define nearPlane -1.0f
 #define farPlane 1.0f
 
@@ -27,6 +29,18 @@
 //TODO : replace the unsigned int with uint32_t (more modern and clear)(c++11) include cstdint [decided based on compatibility]
 //TODO : invert the place of priavte and public in your code so that the people reads the public first 
 //TODO : use glDebugMessageCallBack() / glEnable(GL_DEBUG_OUTPUT) / glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS) instead of glCall
+
+void changeBackgroundColor()
+{
+    //show slider / color picker 
+    //+ link it to renderer's clear color
+
+
+
+
+}
+
+
 
 
 #if Enable == 1
@@ -61,13 +75,19 @@ int main(void)
     }
     Log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
     // number of screen updates to wait to call the next drawcall
-     glfwSwapInterval(10);
+     glfwSwapInterval(1);
+
+     glCall(glEnable(GL_BLEND));
+     glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+
+
     float verteces[] =
     {
-        -50 , 0  , 0 , 0, // 0
-        -50 , 100, 0 , 1, // 1
-         50 , 0  , 1 , 0, // 2
-         50 , 100, 1 , 1 // 3
+        -50 , -50  , 0 , 0, // 0
+        -50 , 50, 0 , 1, // 1
+         50 , -50  , 1 , 0, // 2
+         50 , 50, 1 , 1 // 3
     };
 
     unsigned int indeces[]{
@@ -110,10 +130,10 @@ int main(void)
                                 farPlane);
     
 
-    glm::vec3 camera_translation(-100.0f, -50.0f, 0.0f);
+    glm::vec3 camera_translation(0.0f, 0.0f,0.0f);
     glm::mat4 view = glm::translate(identity, camera_translation);
 
-    glm::vec3 geometry_translation(300.0f, 80.0f, 0.0f);
+    glm::vec3 geometry_translation(0.0f, 0.0f, 0.0f);
     glm::mat4 model = glm::translate(identity, geometry_translation);
 
 
@@ -121,13 +141,51 @@ int main(void)
     mvp = proj * view * model;
     shader.setUniformMat4("u_MVP", mvp);
 
+    Renderer renderer;
+
+   
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init();
+
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        renderer.clear();
 
-        //shader.setUniform_random_4f("u_color");
-        Renderer::Draw(vao, ibo, shader);
        
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        glm::mat4 model = glm::translate(identity, geometry_translation);
+        mvp = proj * view * model;
+        shader.setUniformMat4("u_MVP", mvp);
+
+
+        ImGui::Begin("bg color");                          
+        ImGui::Text("background color");
+        ImGui::ColorEdit3("clear color", (float*)&renderer.m_ClearColor);
+        ImGui::SliderFloat3("geometry translation", &geometry_translation.x, -ScreenWidth/2, ScreenWidth / 2);
+        ImGui::End();
+
+
+        renderer.draw(vao, ibo, shader);
+
+
+        changeBackgroundColor();
+
+
+
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
 
         /* Swap front and back buffers */
@@ -137,7 +195,16 @@ int main(void)
         glCall(glfwPollEvents());
     }
 
+
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
+
     glfwTerminate();
     return 0;
 }
 #endif
+

@@ -72,6 +72,9 @@
     <ClCompile Include="src\test\src\TestClearColor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\test\src\TestMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\VertexBuffer.h">
@@ -999,6 +1002,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\test\headers\TestClearColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\headers\TestMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\headers\TestGeometry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\test\headers\TestScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
