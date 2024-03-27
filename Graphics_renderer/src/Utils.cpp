@@ -1,5 +1,5 @@
-#include "../headers/Utils.h"
-#include "../vendor/glm/glm.hpp"
+#include "Utils.h"
+#include "glm/glm.hpp"
 
 #include <random>
 

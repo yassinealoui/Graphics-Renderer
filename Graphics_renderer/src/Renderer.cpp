@@ -1,13 +1,24 @@
-#include "../headers/VertexBuffer.h"
-#include "../headers/IndexBuffer.h"
-#include "../headers/Shader.h"
-#include "../headers/Renderer.h"
-#include <glew.h>
-#include "../headers/GLDebugUtils.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
+#include "Renderer.h"
+#include "GLEW/glew.h"
+#include "GLDebugUtils.h"
 
 
+Renderer::Renderer():
+	m_ClearColor(glm::vec4(0.3f, 0.7f, 0.6f, 1.0f))
+{
 
-void Renderer::Draw(
+}
+
+Renderer::~Renderer()
+{
+
+}
+
+
+void Renderer::draw(
 	const VertexArray& vao, 
 	const IndexBuffer& ibo, 
 	const Shader& shader)
@@ -28,8 +39,14 @@ void Renderer::Draw(
 
 }
 
-void Renderer::Clear() const
+void Renderer::clear() const
 {
+	glCall(glClearColor(m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a));
 	glCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
+
+void Renderer::setClearColor(glm::vec4 clearColor)
+{
+	m_ClearColor = clearColor;
+}

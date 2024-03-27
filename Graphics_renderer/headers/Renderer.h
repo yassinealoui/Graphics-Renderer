@@ -6,15 +6,14 @@
 
 class Renderer
 {
-private:
+public:
+	Renderer();
+	~Renderer();
+
+	void draw(const VertexArray& vao, const IndexBuffer& ibo, const Shader& shader);
+	void clear() const;
+	void setClearColor(glm::vec4 clearColor);
 
 public:
-	static void Draw(
-		const VertexArray& vao,
-		const IndexBuffer& ibo, 
-		const Shader& shader);
-
-	void Clear() const;
-
-
+	glm::vec4 m_ClearColor;
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../vendor/glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/matrix_float4x4.hpp"
 
 
 //TODO: add a uniform caching system

@@ -1,5 +1,5 @@
-#include "../headers/GLDebugUtils.h"
-#include "glew.h"
+#include "GLDebugUtils.h"
+#include "GLEW/glew.h"
 
 
 #define Log(x) std::cout << x << std::endl;

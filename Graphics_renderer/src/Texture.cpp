@@ -1,10 +1,10 @@
-#include "../headers/Texture.h"
-#include "../headers/GLDebugUtils.h";
+#include "Texture.h"
+#include "GLDebugUtils.h";
 
 #define STBI_FAILURE_USERMSG
 #define STB_IMAGE_IMPLEMENTATION
-#include "../vendor/stb_image/stb_image.h"
-#include "glew.h"
+#include "stb_image/stb_image.h"
+#include "GLEW/glew.h"
 
 
 #define Log(x) std::cout << x << std::endl;

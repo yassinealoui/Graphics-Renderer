@@ -1,6 +1,6 @@
-#include "../headers/IndexBuffer.h"
-#include "../headers/GLDebugUtils.h"
-#include "glew.h"
+#include "IndexBuffer.h"
+#include "GLDebugUtils.h"
+#include "GLEW/glew.h"
 
 IndexBuffer::IndexBuffer(const void* data,const int count):m_count(count)
 {

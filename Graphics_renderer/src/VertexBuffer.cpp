@@ -1,6 +1,6 @@
-#include "../headers/VertexBuffer.h"
-#include "../headers/GLDebugUtils.h"
-#include "glew.h"
+#include "VertexBuffer.h"
+#include "GLDebugUtils.h"
+#include "GLEW/glew.h"
 
 //create assure Binding
 VertexBuffer::VertexBuffer(const void* data, int size) 

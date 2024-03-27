@@ -1,9 +1,9 @@
-#include "../headers/Shader.h"
-#include "../headers/GLDebugUtils.h"
-#include "glew.h"
-#include "../headers/Utils.h"
+#include "Shader.h"
+#include "GLDebugUtils.h"
+#include "GLEW/glew.h"
+#include "Utils.h"
 #include <fstream>
-#include "glew.h"
+
 
 #define Log(x) std::cout << x << std::endl;
 
@@ -148,7 +148,7 @@ unsigned int Shader::CompileShader(ShaderType type,const std::string& source)
 	}
 	else
 	{
-		print(Message::INFO, enumToString(type) + " compiled with success ");
+		//print(Message::INFO, enumToString(type) + " compiled with success ");
 	}
 
 
