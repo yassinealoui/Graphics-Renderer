@@ -1,8 +1,8 @@
 #include <iostream>
-#include <glew.h>
-#include <glfw3.h>
-#include "../headers/VertexArray.h"
-#include "../headers/VertexBuffer.h"
+#include "GLEW/glew.h"
+#include "GLFW/glfw3.h"
+#include "VertexArray.h"
+#include "VertexBuffer.h"
 
 #define Enable  0;
 
