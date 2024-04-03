@@ -39,14 +39,14 @@ void Renderer::draw(
 
 }
 
+void Renderer::setClearColor(glm::vec4 clearColor)
+{
+	m_ClearColor = clearColor;
+}
+
 void Renderer::clear() const
 {
 	glCall(glClearColor(m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a));
 	glCall(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-
-void Renderer::setClearColor(glm::vec4 clearColor)
-{
-	m_ClearColor = clearColor;
-}
