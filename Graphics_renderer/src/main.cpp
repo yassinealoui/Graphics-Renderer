@@ -16,6 +16,11 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "TestMenu.h"
 #include "TestClearColor.h"
+#include "ShortCuts.h"
+#include "TestGeometry.h"
+#include <TestScene.h>
+#include "GeometryType.h"
+#include "Transform.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
@@ -27,36 +32,6 @@
 #define farPlane 1.0f
 
 
-void ImGui_init(GLFWwindow* window)
-{
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init();
-}
-
-void ImGui_NewFrame_Begin()
-{
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-}
-
-
-void ImGui_Frame_End()
-{
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-
-void ImGui_Clean()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-}
 
 #if Enable == 1
 int main(void)
@@ -95,30 +70,37 @@ int main(void)
 
     Renderer renderer;
 
-   
-   
-    ImGui_init(window);
+    ImGui_ShortCut::ImGui_init(window);
 
-    
+
+
+
+    test::TestScene testScene;
+    test::TestGeometry geometry1= testScene.AddGeometry("ojbect1", GeometryType::QUAD);
+
+    geometry1.setGeometryType(GeometryType::TRIANGLE);
+    geometry1.getTransform().setTranslation(glm::vec3(1.0f, 10.0f, 0));
+    geometry1.getTransform().setRotation(glm::vec3(0.0f, 90.0f, 0));
+    geometry1.getTransform().setScale(glm::vec3(2.0f,2.0f,0));
+
+
     while (!glfwWindowShouldClose(window))
     {
         renderer.clear();
-        ImGui_NewFrame_Begin();
+        ImGui_ShortCut::ImGui_NewFrame_Begin();
        
     
 
 
 
-
-
        
 
-        ImGui_Frame_End();
+        ImGui_ShortCut::ImGui_Frame_End();
         glCall(glfwSwapBuffers(window));
         glCall(glfwPollEvents());
     }
 
-    ImGui_Clean();
+    ImGui_ShortCut::ImGui_Clean();
 
     glfwDestroyWindow(window);
     glfwTerminate();

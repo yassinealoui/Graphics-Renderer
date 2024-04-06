@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Test.h"
+#include "GeometryType.h"
+#include "TestGeometry.h"
+
 
 namespace test
 {
@@ -14,11 +17,10 @@ namespace test
 		void OnRender() override;
 		void OnGuiRender() override;
 
-		void SpawnGeometry();
-		void SetTexture();
-		void SetColor();
-		void SetGeometryShape();
+		test::TestGeometry AddGeometry(std::string name, GeometryType type);
 
+	private:
+		std::unordered_map<std::string, test::TestGeometry> geometries;
 	};
 
 }
