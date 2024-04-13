@@ -19,10 +19,10 @@ void main()
 
 uniform vec4 u_color;
 in vec2 v_TexCoord;
-uniform sampler2D u_Texture;
+//uniform sampler2D u_Texture;
 
 void main()
 {
-	vec4 textureColor = texture(u_Texture, v_TexCoord);
-	gl_FragColor = textureColor;
+	//vec4 textureColor = texture(u_Texture, v_TexCoord);
+	gl_FragColor = u_color;
 };

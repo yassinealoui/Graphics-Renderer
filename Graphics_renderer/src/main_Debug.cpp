@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include <GLDebugUtils.h>
 
 #define Enable  0;
 
@@ -157,7 +158,7 @@ int main()
     // Clean up resources
    // glDeleteVertexArrays(1, &VAO);
     //glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    glCall(glDeleteProgram(shaderProgram));
 
     // Terminate GLFW
     glfwTerminate();

@@ -3,7 +3,7 @@
 #include "Test.h"
 #include "GeometryType.h"
 #include "TestGeometry.h"
-
+#include "RenderContext.h"
 
 namespace test
 {
@@ -17,7 +17,7 @@ namespace test
 		void OnRender() override;
 		void OnGuiRender() override;
 
-		test::TestGeometry AddGeometry(std::string name, GeometryType type);
+		test::TestGeometry AddGeometry(std::string name, GeometryType type, RenderContext renderContext);
 
 	private:
 		std::unordered_map<std::string, test::TestGeometry> geometries;

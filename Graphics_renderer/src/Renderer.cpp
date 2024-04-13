@@ -35,8 +35,6 @@ void Renderer::draw(
 	shader.Bind();
 	glCall(glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr));
 
-
-
 }
 
 void Renderer::setClearColor(glm::vec4 clearColor)

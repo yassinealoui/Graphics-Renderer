@@ -22,13 +22,13 @@ Shader::Shader(const std::string& path)
 
 	glCall(glLinkProgram(m_renderID));
 	
-	/*int success;
+	int success;
 	glGetProgramiv(m_renderID, GL_LINK_STATUS, &success);
 	if (!success) {
 		char infoLog[512];
 		glGetProgramInfoLog(m_renderID, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}*/
+	}
 
 
 	glCall(glValidateProgram(m_renderID));
@@ -40,7 +40,8 @@ Shader::Shader(const std::string& path)
 
 Shader::~Shader()
 {
-	glCall(glDeleteShader(m_renderID));
+	glCall(glDeleteProgram(m_renderID));
+	//print(Message::INFO, std::to_string(m_renderID) + " is deleted !");
 }
 
 void Shader::Bind() const

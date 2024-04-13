@@ -1,87 +1,78 @@
 #include <iostream>
 #include "GLEW/glew.h"
 #include "GLFW/glfw3.h"
+#include "GLDebugUtils.h"
+#include "Utils.h"
+#include "WindowContext.h"
+
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
-#include "GLDebugUtils.h"
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-#include "Utils.h"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "ShortCuts.h"
+
 #include "TestMenu.h"
 #include "TestClearColor.h"
-#include "ShortCuts.h"
 #include "TestGeometry.h"
-#include <TestScene.h>
+#include "TestScene.h"
 #include "GeometryType.h"
 #include "Transform.h"
+
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
 #define imageFilePath "resources/images/kaguya.png"
 
-#define ScreenWidth 640.0f
-#define ScreenHeight 640.0f
-#define nearPlane -1.0f
-#define farPlane 1.0f
+#define window_Width 640.0f
+#define window_height 640.0f
+#define nearPlane_z -1.0f
+#define farPlane_z 1.0f
 
+//switch to the modern way of checking errors in opengl
 
 
 #if Enable == 1
 int main(void)
 {
-    GLFWwindow* window;
 
-    if (!glfwInit())
-        return -1;
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    window = glfwCreateWindow(ScreenWidth, ScreenHeight, "Graphics Engine", NULL, NULL);
-    if (!window)
+    WindowContext _windowContext("Kaguya", window_Width, window_height, 1);
+    if (_windowContext.init() == -1)
     {
-        glfwTerminate();
-        return -1;
+        ASSERT(false);
     }
-
-    glfwMakeContextCurrent(window);
-
-    GLenum err = glewInit();
-    if (GLEW_OK != err)
-    {
-       Log("glew initialization failed !")
-    }
-    Log("Status: Using GLEW :" << glewGetString(GLEW_VERSION));
-    // number of screen updates to wait to call the next drawcall
-     glfwSwapInterval(1);
-
-
+    GLFWwindow* window = _windowContext.m_window;
 
      glCall(glEnable(GL_BLEND));
      glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 
     Renderer renderer;
 
     ImGui_ShortCut::ImGui_init(window);
 
 
-
+    float clear_color[] = { 0.0f,0.0f,0.0f,0.0f };
+    RenderContext renderContext(clear_color,window_Width,window_height,nearPlane_z,farPlane_z);
 
     test::TestScene testScene;
-    test::TestGeometry geometry1= testScene.AddGeometry("ojbect1", GeometryType::QUAD);
-
+    test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, renderContext);
+   // test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD,renderContext);
+    
     geometry1.setGeometryType(GeometryType::TRIANGLE);
-    geometry1.getTransform().setTranslation(glm::vec3(1.0f, 10.0f, 0));
-    geometry1.getTransform().setRotation(glm::vec3(0.0f, 90.0f, 0));
-    geometry1.getTransform().setScale(glm::vec3(2.0f,2.0f,0));
+    auto transform = geometry1.getTransform();
+    geometry1.getTransform()->setTranslation(glm::vec3(50.0f, 10.0f, 0));
+    geometry1.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
+    geometry1.getTransform()->setScale(glm::vec3(2.0f,2.0f,0));
+
 
 
     while (!glfwWindowShouldClose(window))
@@ -90,9 +81,7 @@ int main(void)
         ImGui_ShortCut::ImGui_NewFrame_Begin();
        
     
-
-
-
+        geometry1.OnRender();
        
 
         ImGui_ShortCut::ImGui_Frame_End();
@@ -101,9 +90,8 @@ int main(void)
     }
 
     ImGui_ShortCut::ImGui_Clean();
+    
 
-    glfwDestroyWindow(window);
-    glfwTerminate();
     return 0;
 }
 #endif
