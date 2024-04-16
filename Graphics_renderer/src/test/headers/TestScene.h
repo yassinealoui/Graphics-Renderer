@@ -19,6 +19,9 @@ namespace test
 
 		test::TestGeometry AddGeometry(std::string name, GeometryType type, RenderContext renderContext);
 
+	public:
+		int pixels_per_unit = 100;
+
 	private:
 		std::unordered_map<std::string, test::TestGeometry> geometries;
 	};

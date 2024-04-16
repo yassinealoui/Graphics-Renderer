@@ -88,6 +88,7 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+
     // Create vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
@@ -133,6 +134,10 @@ int main()
     // Delete shaders as they're linked into our program now and no longer needed
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+
+
+
 
     // Rendering loop
     while (!glfwWindowShouldClose(window))

@@ -13,13 +13,23 @@
 
 //try to use smart pointers
 //try using const ref in parameters
+struct Dimensions
+{
+	float m_Width;
+	float m_Height;
+
+	Dimensions(float width,float height):m_Width(width),m_Height(height)
+	{}
+};
+
+
 
 namespace test
 {
 	class TestGeometry : public Test
 	{
 	public:
-		TestGeometry(RenderContext renderContext);
+		TestGeometry(float width, float height, RenderContext renderContext);
 		~TestGeometry();
 
 		void OnUpdate() override;
@@ -38,8 +48,20 @@ namespace test
 		void setGeometryType(GeometryType type) { m_type = type; };
 
 
-		void setColor();
+		void setColor(glm::vec4 color);
 
+
+		void setDimensions_inPixels(float width, float height);
+		void setDimensions_inUnits(float width, float height);
+
+	public:
+		int pixels_per_unit;
+
+
+
+	private:
+		//memory potential memory leakage (int*) consider deleting it 
+		float* getVerteces(int& length,float width,float height);
 
 	private:
 		//if one those memebers doesn't change when updating them , just change them to pointer (shared_ptr)
@@ -47,8 +69,9 @@ namespace test
 		GeometryType m_type;
 		Texture* m_Texture;
 
+		
+		Dimensions m_Dimensions;
 		std::shared_ptr<Transform> m_Transform;
-
 		std::shared_ptr <Shader> m_Shader;
 		std::shared_ptr <VertexArray> m_VAO;
 		std::shared_ptr <VertexBuffer> m_VBO;

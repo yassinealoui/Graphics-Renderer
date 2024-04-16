@@ -19,18 +19,32 @@ Renderer::~Renderer()
 
 
 void Renderer::draw(
+	const VertexArrayLayout& layout,
+	const VertexBuffer& vbo,
 	const VertexArray& vao, 
 	const IndexBuffer& ibo, 
 	const Shader& shader)
 {
-	glCall(glClear(GL_COLOR_BUFFER_BIT));
+	//glCall(glClear(GL_COLOR_BUFFER_BIT));
 
 	// good practice to unbind first
+	VertexBuffer::UnBind();
 	VertexArray::UnBind();
 	IndexBuffer::UnBind();
 	Shader::UnBind();
 
+	//we bind the vertex buffer too , because sometimes we have multiple objects in the scene
+	//thus we need to call refreshAllAttributes to update the glVertexAttribPointer to the new set of vertces
+
+
+	vbo.Bind();
+
+	// the vao must be bound , because glVertexAttribPointer will through an invalid operation error
 	vao.Bind();
+	layout.refreshAllAttributes();
+	//
+
+
 	ibo.Bind();
 	shader.Bind();
 	glCall(glDrawElements(GL_TRIANGLES, ibo.getCount(), GL_UNSIGNED_INT, nullptr));

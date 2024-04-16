@@ -6,6 +6,7 @@
 
 
 #define Log(x) std::cout << x << std::endl;
+//TODO:: implement a uniform caching system
 
 //path relative the project dir
 Shader::Shader(const std::string& path)

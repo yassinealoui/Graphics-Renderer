@@ -55,6 +55,7 @@ void VertexArrayLayout::enableAttribute(unsigned int attrib_index) const
 	glCall(glEnableVertexAttribArray(attrib_index));
 }
 
+
 void VertexArrayLayout::enableAllAttributes() const
 {
 	for (const auto& attrib : m_attributes_cache) {
@@ -62,6 +63,13 @@ void VertexArrayLayout::enableAllAttributes() const
 	}
 }
 
+//glVertexAttribPointer must be called when we change the verteces , to update the internal state
+void VertexArrayLayout::refreshAllAttributes() const
+{
+	for (const auto& attrib : m_attributes_cache) {
+		enableAttribute(attrib.second);
+	}
+}
 
 AttributeConfig::AttributeConfig(unsigned int size, unsigned int type, unsigned int normalized) :
 		m_size(size), m_type(type), m_normalized(normalized) {}

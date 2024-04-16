@@ -34,5 +34,7 @@ public:
 
 	void enableAllAttributes() const;
 
+	void refreshAllAttributes() const;
+
 };
 

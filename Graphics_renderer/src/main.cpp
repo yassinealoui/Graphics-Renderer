@@ -51,8 +51,8 @@ int main(void)
     }
     GLFWwindow* window = _windowContext.m_window;
 
-     glCall(glEnable(GL_BLEND));
-     glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+    glCall(glEnable(GL_BLEND));
+    glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
     Renderer renderer;
@@ -61,28 +61,62 @@ int main(void)
 
 
     float clear_color[] = { 0.0f,0.0f,0.0f,0.0f };
-    RenderContext renderContext(clear_color,window_Width,window_height,nearPlane_z,farPlane_z);
+    RenderContext renderContext(clear_color, window_Width, window_height, nearPlane_z, farPlane_z);
 
     test::TestScene testScene;
     test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, renderContext);
-   // test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD,renderContext);
-    
-    geometry1.setGeometryType(GeometryType::TRIANGLE);
-    auto transform = geometry1.getTransform();
-    geometry1.getTransform()->setTranslation(glm::vec3(50.0f, 10.0f, 0));
-    geometry1.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
-    geometry1.getTransform()->setScale(glm::vec3(2.0f,2.0f,0));
+    test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD, renderContext);
+    test::TestGeometry geometry3 = testScene.AddGeometry("ojbect3", GeometryType::QUAD, renderContext);
+
+    glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
+    glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
+    glm::vec4 color3(0.714f, 0.537f, 0.169f, 1.0f);
 
 
+
+    // geometry1.setGeometryType(GeometryType::TRIANGLE);
+    geometry1.getTransform()->setTranslation(glm::vec3(0.0f, 0.0f, 0));
+    geometry1.setColor(color1);
+    //geometry1.setDimensions_inPixels(100, 100);
+    geometry1.setDimensions_inUnits(1, 1);
+
+    float angle = 0;
+    //geometry1.getTransform()->setScale(glm::vec3(2.0f,2.0f,0));
+
+
+    // geometry2.setGeometryType(GeometryType::TRIANGLE);
+    geometry2.getTransform()->setTranslation(glm::vec3(-10.0f, 80.0f, 0));
+    geometry2.setColor(color2);
+    geometry2.setDimensions_inPixels(100, 50);
+
+    // geometry2.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
+   //  geometry2.getTransform()->setScale(glm::vec3(2.0f, 2.0f, 0));
+
+
+    //geometry3.setGeometryType(GeometryType::TRIANGLE);
+    geometry3.getTransform()->setTranslation(glm::vec3(-20.0f, -100.0f, 0));
+    geometry3.setColor(color3);
+    geometry3.setDimensions_inPixels(10, 200);
+
+   // geometry3.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
+   // geometry3.getTransform()->setScale(glm::vec3(2.0f, 2.0f, 0));
 
     while (!glfwWindowShouldClose(window))
     {
         renderer.clear();
         ImGui_ShortCut::ImGui_NewFrame_Begin();
-       
-    
+
+
+        geometry1.getTransform()->setRotation(glm::vec3(0.0f, angle, 0));
         geometry1.OnRender();
-       
+        geometry2.getTransform()->setRotation(glm::vec3(0.0f, -angle*4, 0));
+        geometry2.OnRender();
+        geometry3.getTransform()->setRotation(glm::vec3(0.0f, angle * 0.5f, 0));
+        geometry3.OnRender();
+
+
+
+        angle += 1;
 
         ImGui_ShortCut::ImGui_Frame_End();
         glCall(glfwSwapBuffers(window));
@@ -90,7 +124,7 @@ int main(void)
     }
 
     ImGui_ShortCut::ImGui_Clean();
-    
+
 
     return 0;
 }
