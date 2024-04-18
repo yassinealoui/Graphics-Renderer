@@ -11,17 +11,32 @@
 namespace test
 {
 
-	TestGeometry::TestGeometry(float width, float height, RenderContext renderContext) 
-		:m_Dimensions(width,height),m_RenderContext(renderContext)
+	TestGeometry::TestGeometry(float width, float height, float depth,RenderContext renderContext) 
+		:m_Dimensions(width,height,depth),m_RenderContext(renderContext)
 	{
 		int verteces_count;
-		float* verteces = getVerteces(verteces_count,m_Dimensions.m_Width, m_Dimensions.m_Height);
+		float* verteces = getVerteces(verteces_count,m_Dimensions.m_Width, m_Dimensions.m_Height, m_Dimensions.m_Depth);
 
 		std::cout << verteces_count<<" " << sizeof(verteces) << std::endl;;
 
 		unsigned int indeces[]{
-			   0 , 1 , 2, // first triangle
-			   2 , 3 , 1 // second triagnle
+			   0 , 1 , 2, // front side first triangle
+			   2 , 3 , 1,// front side second triagnle
+
+			   2 , 3 , 6, // right side first triangle
+			   6 , 7 , 3,// right side second triagnle
+
+			   0 , 1 , 4, // left side first triangle
+			   4 , 5 , 1,// left side second triagnle
+
+			   1 , 5 , 3, // top side first triangle
+			   3 , 7 , 5,// top side second triagnle
+
+			   4 , 0 , 6, // bottom side first triangle
+			   6 , 2 , 0,// bottom side second triagnle
+
+			   4 , 5 , 6, // back side first triangle
+			   6 , 7 , 5// back side second triagnle
 		};
 		m_VAO = std::make_shared<VertexArray>();
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces)*verteces_count);
@@ -57,25 +72,34 @@ namespace test
 
 	};
 
-	float* TestGeometry::getVerteces(int& length,float width, float height)
+	float* TestGeometry::getVerteces(int& length,float width, float height , float depth)
 	{
-		float z = (m_RenderContext.m_nearPlane_z + m_RenderContext.m_farPlane_z) / 2;//random choice
+		length = 40; // don't forget to update this when changing the Verteces !!!
+		
+					 
+		//float z = (m_RenderContext.m_nearPlane_z + m_RenderContext.m_farPlane_z) / 2;//random choice
 		float* verteces = new float[] {
-			    -width / 2, -height / 2, z, 0, 0,   // 0
-				-width / 2,  height / 2, z, 0, 1,  // 1
-				 width / 2, -height / 2, z, 1, 0, // 2
-				 width / 2,  height / 2, z, 1, 1 // 3
+			    -width / 2, -height / 2, 0, 0, 0,   // 0
+				-width / 2,  height / 2, 0, 0, 1,  // 1
+				 width / 2, -height / 2, 0, 1, 0, // 2
+				 width / 2,  height / 2, 0, 1, 1, // 3
+
+				-width / 2, -height / 2, -depth, 0, 0,   // 4
+				-width / 2,  height / 2, -depth, 0, 1,  // 5
+				 width / 2, -height / 2, -depth, 1, 0, // 6
+				 width / 2,  height / 2, -depth, 1, 1 // 7
+
+
 		};
-		length = 20; // don't forget to update this when changing the Verteces
 		return verteces;
 	};
 
 
-	void TestGeometry::setDimensions_inPixels(float width, float height)
+	void TestGeometry::setDimensions_inPixels(float width, float height, float depth)
 	{
-		m_Dimensions = Dimensions(width, height);
+		m_Dimensions = Dimensions(width, height,depth);
 		int length;
-		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height);
+		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height,m_Dimensions.m_Depth);
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces) * length);
 	};
 	void TestGeometry::setDimensions_inUnits(float width, float height)
@@ -99,7 +123,7 @@ namespace test
 		// the values of cos and sin are not 100% accurate test it with 90° in rad
 
 		int length;
-		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height);
+		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height, m_Dimensions.m_Depth);
 
 		if (once)
 		{

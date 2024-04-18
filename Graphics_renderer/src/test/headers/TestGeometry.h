@@ -17,8 +17,9 @@ struct Dimensions
 {
 	float m_Width;
 	float m_Height;
+	float m_Depth;
 
-	Dimensions(float width,float height):m_Width(width),m_Height(height)
+	Dimensions(float width, float height, float depth) :m_Width(width), m_Height(height), m_Depth(depth)
 	{}
 };
 
@@ -29,7 +30,7 @@ namespace test
 	class TestGeometry : public Test
 	{
 	public:
-		TestGeometry(float width, float height, RenderContext renderContext);
+		TestGeometry(float width, float height, float depth ,RenderContext renderContext);
 		~TestGeometry();
 
 		void OnUpdate() override;
@@ -51,7 +52,7 @@ namespace test
 		void setColor(glm::vec4 color);
 
 
-		void setDimensions_inPixels(float width, float height);
+		void setDimensions_inPixels(float width, float height, float depth);
 		void setDimensions_inUnits(float width, float height);
 
 	public:
@@ -61,7 +62,7 @@ namespace test
 
 	private:
 		//memory potential memory leakage (int*) consider deleting it 
-		float* getVerteces(int& length,float width,float height);
+		float* getVerteces(int& length,float width,float height, float depth);
 
 	private:
 		//if one those memebers doesn't change when updating them , just change them to pointer (shared_ptr)
