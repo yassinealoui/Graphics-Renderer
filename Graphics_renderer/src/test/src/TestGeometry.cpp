@@ -27,7 +27,7 @@ namespace test
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces)*verteces_count);
 		m_Layout = std::make_shared<VertexArrayLayout>();
 
-		m_Layout->addAttribute<float>("position", 2);
+		m_Layout->addAttribute<float>("position", 3);
 		m_Layout->addAttribute<float>("texture", 2);
 		m_VAO->addBuffer(*m_VBO, *m_Layout);
 
@@ -59,13 +59,14 @@ namespace test
 
 	float* TestGeometry::getVerteces(int& length,float width, float height)
 	{
-		float* verteces = new float[]{
-			    -width / 2, -height / 2, 0, 0,   // 0
-				-width / 2,  height / 2, 0, 1,  // 1
-				 width / 2, -height / 2, 1, 0, // 2
-				 width / 2,  height / 2, 1, 1 // 3
+		float z = (m_RenderContext.m_nearPlane_z + m_RenderContext.m_farPlane_z) / 2;//random choice
+		float* verteces = new float[] {
+			    -width / 2, -height / 2, z, 0, 0,   // 0
+				-width / 2,  height / 2, z, 0, 1,  // 1
+				 width / 2, -height / 2, z, 1, 0, // 2
+				 width / 2,  height / 2, z, 1, 1 // 3
 		};
-		length = 16;
+		length = 20; // don't forget to update this when changing the Verteces
 		return verteces;
 	};
 
@@ -77,7 +78,10 @@ namespace test
 		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height);
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces) * length);
 	};
+	void TestGeometry::setDimensions_inUnits(float width, float height)
+	{
 
+	}
 
 	bool once = true;
 	//clean on render (globalize proj..etc)
@@ -87,14 +91,16 @@ namespace test
 
 		////rotate
 		////get the rotation matrix
+		float z_angle_rad = m_Transform->getRotation().z * (pi / 180);
+		float x_angle_rad = m_Transform->getRotation().x * (pi / 180);
 		float y_angle_rad = m_Transform->getRotation().y * (pi / 180);
+		
 
 		// the values of cos and sin are not 100% accurate test it with 90° in rad
-		float cos_ = cos(y_angle_rad);
-		float sing = sin(y_angle_rad);
 
 		int length;
 		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height);
+
 		if (once)
 		{
 			Log("old:");
@@ -106,18 +112,48 @@ namespace test
 			
 		}
 
-
-
-		for (int i = 0;i < length;i += 4)
+		//around z axis rotation (change in the x y plane)
+		for (int i = 0;i < length;i += 5)
 		{
-			float x_after_rotation = verteces[i] * cos(y_angle_rad) - verteces[i + 1] * sin(y_angle_rad);
-			float y_after_rotation = verteces[i] * sin(y_angle_rad) + verteces[i + 1] * cos(y_angle_rad);
+			float x_after_rotation = verteces[i] * cos(z_angle_rad) - verteces[i + 1] * sin(z_angle_rad);
+			float y_after_rotation = verteces[i] * sin(z_angle_rad) + verteces[i + 1] * cos(z_angle_rad);
 
 			verteces[i] = x_after_rotation;
 			verteces[i + 1] = y_after_rotation;
 		}
+
+		// the object will rotate in correct way always , but if you put the nearplane and farplane
+		// too close like -1px and 1px the verteces' new positions will be outside of the clip space 
+		//so it will give an odd rotation
+
+		//around x axis rotation(change in the y z plane)
+		for (int i = 0;i < length;i += 5)
+		{
+			float y_after_rotation = verteces[i + 1] * cos(x_angle_rad) - verteces[i + 2] * sin(x_angle_rad);
+			float z_after_rotation = verteces[i + 1] * sin(x_angle_rad) + verteces[i + 2] * cos(x_angle_rad);
+
+			verteces[i + 1] = y_after_rotation;
+			verteces[i + 2] = z_after_rotation;
+		}
+
+
+		//around y axis rotation(change in the x z plane)
+		for (int i = 0;i < length;i += 5)
+		{
+			float x_after_rotation = verteces[i] * cos(y_angle_rad) - verteces[i + 2] * sin(y_angle_rad);
+			float z_after_rotation = verteces[i] * sin(y_angle_rad) + verteces[i + 2] * cos(y_angle_rad);
+
+			verteces[i] = x_after_rotation;
+			verteces[i + 2] = z_after_rotation;
+		}
+
+
+
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces) * length);
 		
+
+
+
 
 		if (once)
 		{

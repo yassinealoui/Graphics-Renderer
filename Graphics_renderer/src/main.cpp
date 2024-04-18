@@ -34,9 +34,9 @@
 
 #define window_Width 640.0f
 #define window_height 640.0f
-#define nearPlane_z -1.0f
-#define farPlane_z 1.0f
-
+#define nearPlane_z -320.0f
+#define farPlane_z 320.0f
+//normlize z
 //switch to the modern way of checking errors in opengl
 
 
@@ -107,12 +107,12 @@ int main(void)
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-        geometry1.getTransform()->setRotation(glm::vec3(0.0f, angle, 0));
+        geometry1.getTransform()->setRotation(glm::vec3(0, angle,angle ));
         geometry1.OnRender();
-        geometry2.getTransform()->setRotation(glm::vec3(0.0f, -angle*4, 0));
-        geometry2.OnRender();
-        geometry3.getTransform()->setRotation(glm::vec3(0.0f, angle * 0.5f, 0));
-        geometry3.OnRender();
+        //geometry2.getTransform()->setRotation(glm::vec3(0.0f,0.0f, -angle * 4));
+        //geometry2.OnRender();
+        //geometry3.getTransform()->setRotation(glm::vec3(0.0f,0.0f, angle * 0.5f));
+        //geometry3.OnRender();
 
 
 
