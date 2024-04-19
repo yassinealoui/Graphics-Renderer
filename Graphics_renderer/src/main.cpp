@@ -36,8 +36,7 @@
 #define window_height 640.0f
 #define nearPlane_z -320.0f
 #define farPlane_z 320.0f
-//normlize z
-//switch to the modern way of checking errors in opengl
+
 
 
 #if Enable == 1
@@ -76,11 +75,7 @@ int main(void)
     // geometry1.setGeometryType(GeometryType::TRIANGLE);
     geometry1.getTransform()->setTranslation(glm::vec3(0.0f, 0.0f, 0));
     geometry1.setColor(color1);
-    //geometry1.setDimensions_inPixels(100, 100);
-    geometry1.setDimensions_inUnits(1, 1);
-
-    float angle = 0;
-    //geometry1.getTransform()->setScale(glm::vec3(2.0f,2.0f,0));
+    geometry1.setDimensions_inPixels(200, 300,200);
 
 
     // geometry2.setGeometryType(GeometryType::TRIANGLE);
@@ -88,29 +83,26 @@ int main(void)
     geometry2.setColor(color2);
     geometry2.setDimensions_inPixels(100, 50,50);
 
-    // geometry2.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
-   //  geometry2.getTransform()->setScale(glm::vec3(2.0f, 2.0f, 0));
-
 
     //geometry3.setGeometryType(GeometryType::TRIANGLE);
     geometry3.getTransform()->setTranslation(glm::vec3(-20.0f, -100.0f, 0));
     geometry3.setColor(color3);
     geometry3.setDimensions_inPixels(10, 200,50);
 
-   // geometry3.getTransform()->setRotation(glm::vec3(0.0f, 90.0f, 0));
-   // geometry3.getTransform()->setScale(glm::vec3(2.0f, 2.0f, 0));
 
+    float angle = 0;
     while (!glfwWindowShouldClose(window))
     {
         renderer.clear();
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-        geometry1.getTransform()->setRotation(glm::vec3(0, angle,angle ));
+        geometry1.getTransform()->setRotation(glm::vec3(angle, angle, 0));
+
         geometry1.OnRender();
-        geometry2.getTransform()->setRotation(glm::vec3(angle,0.0f, -angle * 4));
+        geometry2.getTransform()->setRotation(glm::vec3(0.0f, angle, -angle * 4));
         geometry2.OnRender();
-        geometry3.getTransform()->setRotation(glm::vec3(-angle,0.0f, angle * 0.5f));
+        geometry3.getTransform()->setRotation(glm::vec3(-angle, 0.0f, angle * 0.5f));
         geometry3.OnRender();
 
 
@@ -339,9 +331,4 @@ int main(void)
 //glfwTerminate();
 //return 0;
 //}
-//
-//
-//
-//
-//
-//
+

@@ -11,7 +11,6 @@
 #include "Shader.h"
 #include <memory>
 
-//try to use smart pointers
 //try using const ref in parameters
 struct Dimensions
 {
@@ -30,7 +29,7 @@ namespace test
 	class TestGeometry : public Test
 	{
 	public:
-		TestGeometry(float width, float height, float depth ,RenderContext renderContext);
+		TestGeometry(float width, float height, float depth, RenderContext renderContext);
 		~TestGeometry();
 
 		void OnUpdate() override;
@@ -38,12 +37,13 @@ namespace test
 		void OnGuiRender() override;
 
 
+
 		std::shared_ptr<Transform> getTransform() const { return m_Transform; };
 		void setTransform(Transform transform) { *m_Transform = transform; };
 
 
-		Texture* getTexture() const { return m_Texture; };
-		void setTexture(Texture* texture) { m_Texture = texture; };
+		std::shared_ptr <Texture> getTexture() const { return m_Texture; };
+		void setTexture(Texture texture) { *m_Texture = texture; };
 
 		GeometryType getGeometryType() const { return m_type; };
 		void setGeometryType(GeometryType type) { m_type = type; };
@@ -61,16 +61,15 @@ namespace test
 
 
 	private:
-		//memory potential memory leakage (int*) consider deleting it 
-		float* getVerteces(int& length,float width,float height, float depth);
+		//memory potential memory leakage (float*) consider deleting it 
+		float* getVerteces(int& length, float width, float height, float depth);
 
 	private:
-		//if one those memebers doesn't change when updating them , just change them to pointer (shared_ptr)
 		RenderContext m_RenderContext;
 		GeometryType m_type;
-		Texture* m_Texture;
+		std::shared_ptr < Texture> m_Texture;
 
-		
+
 		Dimensions m_Dimensions;
 		std::shared_ptr<Transform> m_Transform;
 		std::shared_ptr <Shader> m_Shader;
