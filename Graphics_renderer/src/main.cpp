@@ -69,25 +69,25 @@ int main(void)
 
     glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
     glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
-    glm::vec4 color3(0.714f, 0.537f, 0.169f, 1.0f);
+    glm::vec4 color3(0.714f, 0.537f, 0.169f, 0.9f);
 
 
-    // geometry1.setGeometryType(GeometryType::TRIANGLE);
+    geometry1.setGeometryType(GeometryType::CIRCLE);
     geometry1.getTransform()->setTranslation(glm::vec3(0.0f, 0.0f, 0));
-    geometry1.setColor(color1);
-    geometry1.setDimensions_inPixels(200, 300,200);
+   // geometry1.setColor(color1);
+   // geometry1.setDimensions_inPixels(200, 300,200);
 
 
-    // geometry2.setGeometryType(GeometryType::TRIANGLE);
+    geometry2.setGeometryType(GeometryType::TRIANGLE);
     geometry2.getTransform()->setTranslation(glm::vec3(-50.0f, 200.0f, 0));
     geometry2.setColor(color2);
     geometry2.setDimensions_inPixels(100, 50,50);
 
 
-    //geometry3.setGeometryType(GeometryType::TRIANGLE);
+    geometry3.setGeometryType(GeometryType::QUAD);
     geometry3.getTransform()->setTranslation(glm::vec3(-20.0f, -100.0f, 0));
     geometry3.setColor(color3);
-    geometry3.setDimensions_inPixels(10, 200,50);
+    geometry3.setDimensions_inPixels(80, 200,50);
 
 
     float angle = 0;
@@ -97,13 +97,13 @@ int main(void)
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-        geometry1.getTransform()->setRotation(glm::vec3(angle, angle, 0));
+        //geometry1.getTransform()->setRotation(glm::vec3(0, 0, angle));
 
         geometry1.OnRender();
-        geometry2.getTransform()->setRotation(glm::vec3(0.0f, angle, -angle * 4));
-        geometry2.OnRender();
-        geometry3.getTransform()->setRotation(glm::vec3(-angle, 0.0f, angle * 0.5f));
-        geometry3.OnRender();
+        //geometry2.getTransform()->setRotation(glm::vec3(0, angle, 0));
+        //geometry2.OnRender();
+        //geometry3.getTransform()->setRotation(glm::vec3(-angle, 0, 0));
+        //geometry3.OnRender();
 
 
 

@@ -29,7 +29,7 @@ namespace test
 	class TestGeometry : public Test
 	{
 	public:
-		TestGeometry(float width, float height, float depth, RenderContext renderContext);
+		TestGeometry(float width, float height, float depth, GeometryType type, RenderContext renderContext);
 		~TestGeometry();
 
 		void OnUpdate() override;
@@ -63,12 +63,14 @@ namespace test
 	private:
 		//memory potential memory leakage (float*) consider deleting it 
 		float* getVerteces(int& length, float width, float height, float depth);
+		//make verteces a memeber variable
+		unsigned int* getIndeces(int& indeces_count, float* verteces);
 
 	private:
 		RenderContext m_RenderContext;
 		GeometryType m_type;
 		std::shared_ptr < Texture> m_Texture;
-
+		glm::vec4 m_Color;
 
 		Dimensions m_Dimensions;
 		std::shared_ptr<Transform> m_Transform;

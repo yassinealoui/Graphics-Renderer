@@ -6,39 +6,25 @@
 #include <iostream>
 #include "Utils.h"
 //TODO:: store the verteces to avoid redundant calculation
+// TODO: impliment rotation around a vector not just x , y , z axis
+// TODO: switch to units system not pixels
 // the values of cos and sin are not 100% accurate test it with 90° in rad
+
+#define BASIC_SHADER "resources/shader/shader.shader"
+#define CIRCLE_SHADER "resources/shader/circle.shader"
 
 
 namespace test
 {
 
-	TestGeometry::TestGeometry(float width, float height, float depth,RenderContext renderContext) 
-		:m_Dimensions(width,height,depth),m_RenderContext(renderContext)
+	TestGeometry::TestGeometry(float width, float height, float depth,GeometryType type,RenderContext renderContext) 
+		:m_Dimensions(width,height,depth),m_type(type),m_RenderContext(renderContext), m_Color(glm::vec4(0.9f, 0.7f, 0.5f, 1))
 	{
 		int verteces_count;
 		float* verteces = getVerteces(verteces_count,m_Dimensions.m_Width, m_Dimensions.m_Height, m_Dimensions.m_Depth);
+		int indeces_count;
+		unsigned int* indeces = getIndeces(indeces_count,verteces);
 
-		std::cout << verteces_count<<" " << sizeof(verteces) << std::endl;;
-
-		unsigned int indeces[]{
-			   0 , 1 , 2, // front side first triangle
-			   2 , 3 , 1,// front side second triagnle
-
-			   //2 , 3 , 6, // right side first triangle
-			   //6 , 7 , 3,// right side second triagnle
-
-			   //0 , 1 , 4, // left side first triangle
-			   //4 , 5 , 1,// left side second triagnle
-
-			   //1 , 5 , 3, // top side first triangle
-			   //3 , 7 , 5,// top side second triagnle
-
-			   //4 , 0 , 6, // bottom side first triangle
-			   //6 , 2 , 0,// bottom side second triagnle
-
-			   //4 , 5 , 6, // back side first triangle
-			   //6 , 7 , 5// back side second triagnle
-		};
 		m_VAO = std::make_shared<VertexArray>();
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces)*verteces_count);
 		m_Layout = std::make_shared<VertexArrayLayout>();
@@ -47,11 +33,10 @@ namespace test
 		m_Layout->addAttribute<float>("texture", 2);
 		m_VAO->addBuffer(*m_VBO, *m_Layout);
 
-		m_IBO = std::make_shared<IndexBuffer>(indeces, sizeof(indeces) / sizeof(indeces[0]));
+		m_IBO = std::make_shared<IndexBuffer>(indeces, indeces_count);
 
-		std::string path = "resources/shader/shader.shader";
-		m_Shader = std::make_shared<Shader>(path);
-		m_Shader->setUniform4f("u_color", 0.9f, 0.7f, 0.5f, 1);
+		m_Shader = std::make_shared<Shader>(BASIC_SHADER);
+		m_Shader->setUniform4f("u_color", m_Color.r, m_Color.g, m_Color.b, m_Color.a);
 
 		m_Transform = std::make_shared<Transform>();
 
@@ -68,22 +53,74 @@ namespace test
 	};
 
 	float* TestGeometry::getVerteces(int& length,float width, float height , float depth)
-	{
-		length = 40; // don't forget to update this when changing the Verteces !!!
-						 
-		float* verteces = new float[] {
-			    -width / 2, -height / 2, 0, 0, 0,   // 0
-				-width / 2,  height / 2, 0, 0, 1,  // 1
-				 width / 2, -height / 2, 0, 1, 0, // 2
-				 width / 2,  height / 2, 0, 1, 1, // 3
+	{	
+		float* verteces;
+		
+		switch (m_type)
+		{
+		case GeometryType::CIRCLE://just return a Quad and the shader will create the circle
+			length = 20; // don't forget to update this when changing the Verteces !!!
+			return verteces = new float[] {
+				-width / 2, -height / 2, 0, 0, 0,   // 0
+					-width / 2, height / 2, 0, 0, 1,  // 1
+					width / 2, -height / 2, 0, 1, 0, // 2
+					width / 2, height / 2, 0, 1, 1, // 3
 
-				//-width / 2, -height / 2, -depth, 0, 0,   // 4
-				//-width / 2,  height / 2, -depth, 0, 1,  // 5
-				// width / 2, -height / 2, -depth, 1, 0, // 6
-				// width / 2,  height / 2, -depth, 1, 1 // 7
-		};
+			};
+		case GeometryType::TRIANGLE:
+			length = 15; // don't forget to update this when changing the Verteces !!!
+			return verteces = new float[] {
+				-width / 2, -height / 2, 0, 0, 0,   // 0
+					0, height / 2, 0, 0, 1,  // 1
+					width / 2, -height / 2, 0, 1, 0, // 2
+			};
+		default://default is a Quad
+			length = 20; // don't forget to update this when changing the Verteces !!!
+			return verteces = new float[] {
+				-width / 2, -height / 2, 0, 0, 0,   // 0
+					-width / 2, height / 2, 0, 0, 1,  // 1
+					width / 2, -height / 2, 0, 1, 0, // 2
+					width / 2, height / 2, 0, 1, 1, // 3
+
+			};
+		}
+
+
+
 		return verteces;
 	};
+
+	unsigned int* TestGeometry::getIndeces(int& indeces_count,float* verteces)
+	{
+		unsigned int* indeces;
+		switch (m_type)
+		{
+		case GeometryType::TRIANGLE:
+			indeces_count = 3; // don't forget to update this when changing the indeces !!!
+			return 		new unsigned int[] {
+				0, 1, 2, // front side triangle
+			};
+		default://default is a Quad
+			indeces_count = 6; // don't forget to update this when changing the indeces !!!
+			return 		new unsigned int[]{
+			   0 , 1 , 2, // front side first triangle
+			   2 , 3 , 1,// front side second triagnle
+			};
+		}
+
+
+		return indeces;
+	}
+
+
+
+
+
+
+
+
+
+
 
 
 	void TestGeometry::setDimensions_inPixels(float width, float height, float depth)
@@ -110,6 +147,21 @@ namespace test
 		
 		int length;
 		float* verteces = getVerteces(length, m_Dimensions.m_Width, m_Dimensions.m_Height, m_Dimensions.m_Depth);
+		int indeces_count;
+		unsigned int* indeces = getIndeces(indeces_count, verteces);
+		m_IBO = std::make_shared<IndexBuffer>(indeces, indeces_count);
+
+
+		//get this section out of OnRender
+		if (m_type == GeometryType::CIRCLE)
+		{
+			m_Shader = std::make_shared<Shader>(CIRCLE_SHADER);
+		}
+		else {
+			m_Shader = std::make_shared<Shader>(BASIC_SHADER);
+		}
+		m_Shader->setUniform4f("u_color", m_Color.r, m_Color.g, m_Color.b, m_Color.a);
+
 
 		glm::mat4 rotation_around_x_axis = glm::mat4(
 			1.0f, 0.0f, 0.0f, 0.0f, 
@@ -138,6 +190,9 @@ namespace test
 
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces) * length);
 		
+
+
+
 
 
 		glm::mat4 proj = glm::ortho(
@@ -174,6 +229,7 @@ namespace test
 
 	void TestGeometry::setColor(glm::vec4 color)
 	{
+		m_Color = color;
 		m_Shader->setUniform4f("u_color", color.r, color.g, color.b, color.a);
 	}
 
@@ -191,10 +247,38 @@ namespace test
 
 
 
+//
+//verteces = new float[] {
+//	-width / 2, -height / 2, 0, 0, 0,   // 0
+//		-width / 2, height / 2, 0, 0, 1,  // 1
+//		width / 2, -height / 2, 0, 1, 0, // 2
+//		width / 2, height / 2, 0, 1, 1, // 3
+//
+//	   //-width / 2, -height / 2, -depth, 0, 0,   // 4
+//	   //-width / 2,  height / 2, -depth, 0, 1,  // 5
+//	   // width / 2, -height / 2, -depth, 1, 0, // 6
+//	   // width / 2,  height / 2, -depth, 1, 1 // 7
+//};
 
-
-
-
+//unsigned int indeces[]{
+//	   0 , 1 , 2, // front side first triangle
+//	   2 , 3 , 1,// front side second triagnle
+//
+//	   //2 , 3 , 6, // right side first triangle
+//	   //6 , 7 , 3,// right side second triagnle
+//
+//	   //0 , 1 , 4, // left side first triangle
+//	   //4 , 5 , 1,// left side second triagnle
+//
+//	   //1 , 5 , 3, // top side first triangle
+//	   //3 , 7 , 5,// top side second triagnle
+//
+//	   //4 , 0 , 6, // bottom side first triangle
+//	   //6 , 2 , 0,// bottom side second triagnle
+//
+//	   //4 , 5 , 6, // back side first triangle
+//	   //6 , 7 , 5// back side second triagnle
+//};
 
 
 
