@@ -7,7 +7,7 @@
 class Renderer
 {
 public:
-	Renderer();
+	Renderer(glm::vec4 clear_color);
 	~Renderer();
 
 	void draw(

@@ -54,19 +54,22 @@ int main(void)
     glCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
-    Renderer renderer;
+    glm::vec4 global_clear_color(0.3f, 0.7f, 0.6f, 1.0f);
+    //glm::vec4 global_clear_color(1,0,0, 1.0f);
+    Renderer renderer(global_clear_color);
 
     ImGui_ShortCut::ImGui_init(window);
 
 
-    float clear_color[] = { 0.0f,0.0f,0.0f,0.0f };
-    RenderContext renderContext(clear_color, window_Width, window_height, nearPlane_z, farPlane_z);
+    float geometry_clear_color[] = { 0.9f, 0.7f, 0.5f, 1 };
+    RenderContext geometryRenderContext(geometry_clear_color, window_Width, window_height, nearPlane_z, farPlane_z);
 
     test::TestScene testScene;
-    test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, renderContext);
-    test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD, renderContext);
-    test::TestGeometry geometry3 = testScene.AddGeometry("ojbect3", GeometryType::QUAD, renderContext);
+    test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, geometryRenderContext);
+    test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD, geometryRenderContext);
+    test::TestGeometry geometry3 = testScene.AddGeometry("ojbect3", GeometryType::QUAD, geometryRenderContext);
 
+    glm::vec4 color0(1, 1, 1, 1.0f);
     glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
     glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
     glm::vec4 color3(0.714f, 0.537f, 0.169f, 0.9f);
@@ -74,8 +77,8 @@ int main(void)
 
     geometry1.setGeometryType(GeometryType::CIRCLE);
     geometry1.getTransform()->setTranslation(glm::vec3(0.0f, 0.0f, 0));
-   // geometry1.setColor(color1);
-   // geometry1.setDimensions_inPixels(200, 300,200);
+    geometry1.setColor(color1);
+    geometry1.setDimensions_inPixels(200, 200,0);
 
 
     geometry2.setGeometryType(GeometryType::TRIANGLE);

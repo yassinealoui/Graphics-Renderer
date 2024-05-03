@@ -18,8 +18,15 @@ namespace test
 {
 
 	TestGeometry::TestGeometry(float width, float height, float depth,GeometryType type,RenderContext renderContext) 
-		:m_Dimensions(width,height,depth),m_type(type),m_RenderContext(renderContext), m_Color(glm::vec4(0.9f, 0.7f, 0.5f, 1))
+		:m_Dimensions(width,height,depth),m_type(type),m_RenderContext(renderContext)
 	{
+		/*m_Color = glm::vec4(
+			renderContext.m_ClearColor[0],
+			renderContext.m_ClearColor[1],
+			renderContext.m_ClearColor[2],
+			renderContext.m_ClearColor[3]
+		);*/
+
 		int verteces_count;
 		float* verteces = getVerteces(verteces_count,m_Dimensions.m_Width, m_Dimensions.m_Height, m_Dimensions.m_Depth);
 		int indeces_count;
@@ -217,7 +224,7 @@ namespace test
 
 
 
-		Renderer renderer;
+		Renderer renderer(glm::vec4(0));
 		renderer.draw(*m_Layout,*m_VBO,*m_VAO, *m_IBO, *m_Shader);
 	};
 

@@ -27,6 +27,11 @@ void main()
 
 	float distance = sqrt(dot(v_TexCoord - vec2(0.5), v_TexCoord - vec2(0.5)));
 	vec4 color = vec4(0, 0, 0 , 1);
-	color.rgb = vec3(1 - smoothstep(0.49 , 0.5, distance));
+	color.rgb = vec3(1 - step(0.5, distance)) * u_color.rgb;
+	//change the alpha value on the edge to make a smooth transition from the solid color of circle 
+	//to the background color by reducing gradually the alpha value of the pixels between 0.49 and 0.5
+	color.a = 1- smoothstep(0.49, 0.5, distance);
 	gl_FragColor = color;
+
+
 };

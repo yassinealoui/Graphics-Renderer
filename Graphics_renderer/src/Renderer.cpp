@@ -6,8 +6,8 @@
 #include "GLDebugUtils.h"
 
 
-Renderer::Renderer():
-	m_ClearColor(glm::vec4(0.3f, 0.7f, 0.6f, 1.0f))
+Renderer::Renderer(glm::vec4 clear_color):
+	m_ClearColor(clear_color)
 {
 
 }
