@@ -18,11 +18,12 @@ void main()
 #version 330 core
 
 uniform vec4 u_color;
+uniform float u_TintIntensity = 1.0;
 in vec2 v_TexCoord;
-//uniform sampler2D u_Texture;
+uniform sampler2D u_Texture;
 
 void main()
 {
-	//vec4 textureColor = texture(u_Texture, v_TexCoord);
-	gl_FragColor = u_color;
+	vec4 textureColor = texture(u_Texture, v_TexCoord);
+	gl_FragColor = mix(textureColor, textureColor * u_color, u_TintIntensity);
 };

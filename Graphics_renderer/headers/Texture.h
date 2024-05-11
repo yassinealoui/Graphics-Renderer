@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
+#include "GLEW/glew.h"
 
 class Texture
 {
 public:
-	Texture(std::string imageFilePath, unsigned int slot = 0);
+	Texture(std::string imageFilePath, unsigned int slot = 0,GLint texture_filter_param = GL_LINEAR);
 	~Texture();
 	void Bind() const;
 	void UnBind() const;

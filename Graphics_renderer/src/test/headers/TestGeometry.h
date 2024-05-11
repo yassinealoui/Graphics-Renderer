@@ -43,7 +43,11 @@ namespace test
 
 
 		std::shared_ptr <Texture> getTexture() const { return m_Texture; };
-		void setTexture(Texture texture) { *m_Texture = texture; };
+		void setTexture(Texture texture, float tintIntensity = 1.0)
+		{
+			m_TintIntensity = tintIntensity;
+			*m_Texture = texture;
+		};
 
 		GeometryType getGeometryType() const { return m_type; };
 		void setGeometryType(GeometryType type) { m_type = type; };
@@ -55,6 +59,9 @@ namespace test
 		void setDimensions_inPixels(float width, float height, float depth);
 		void setDimensions_inUnits(float width, float height);
 
+
+
+		void setTexture(std::string imagePath, float tintIntensity = 1.0, GLint texture_filter_param = GL_LINEAR);
 	public:
 		int pixels_per_unit;
 
@@ -71,7 +78,7 @@ namespace test
 		GeometryType m_type;
 		std::shared_ptr < Texture> m_Texture;
 		glm::vec4 m_Color;
-
+		float m_TintIntensity;
 		Dimensions m_Dimensions;
 		std::shared_ptr<Transform> m_Transform;
 		std::shared_ptr <Shader> m_Shader;

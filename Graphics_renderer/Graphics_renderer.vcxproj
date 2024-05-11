@@ -492,7 +492,9 @@
     <Text Include="resources\shader\shader.shader" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\images\grey_girl.png" />
     <Image Include="resources\images\kaguya.png" />
+    <Image Include="resources\images\white.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shader\circle.shader" />

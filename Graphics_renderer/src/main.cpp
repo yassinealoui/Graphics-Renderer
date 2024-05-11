@@ -30,13 +30,17 @@
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
-#define imageFilePath "resources/images/kaguya.png"
+#define imagePath0 "resources/images/white.png" // default texture image
+#define imagePath1 "resources/images/kaguya.png"
+#define imagePath2 "resources/images/grey_girl.png"
+
 
 #define window_Width 640.0f
 #define window_height 640.0f
 #define nearPlane_z -320.0f
 #define farPlane_z 320.0f
 
+//TODO:: fix the multiple objects texture update -> set default texture
 
 
 #if Enable == 1
@@ -70,28 +74,33 @@ int main(void)
     test::TestGeometry geometry3 = testScene.AddGeometry("ojbect3", GeometryType::QUAD, geometryRenderContext);
 
     glm::vec4 color0(1, 1, 1, 1.0f);
-    glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
-    glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
-    glm::vec4 color3(0.714f, 0.537f, 0.169f, 0.9f);
+    //glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
+    //glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
+    //glm::vec4 color3(0.714f, 0.537f, 0.169f, 0.9f);
+    glm::vec4 color1(1, 0, 0, 1.0f);
+    glm::vec4 color2(0, 1, 0, 1.0f);
+    glm::vec4 color3(0, 1, 1, 1.0f);
+
+    float tintIntensity = 0.3f;
 
 
-    geometry1.setGeometryType(GeometryType::CIRCLE);
-    geometry1.getTransform()->setTranslation(glm::vec3(0.0f, 0.0f, 0));
+    geometry1.setGeometryType(GeometryType::TRIANGLE);
+    geometry1.getTransform()->setTranslation(glm::vec3(-200.0f, 200.0f, 0));
     geometry1.setColor(color1);
-    geometry1.setDimensions_inPixels(200, 200,0);
+    geometry1.setDimensions_inPixels(100, 100,0);
+    geometry1.setTexture(imagePath2, tintIntensity);
 
-
-    geometry2.setGeometryType(GeometryType::TRIANGLE);
+    geometry2.setGeometryType(GeometryType::ELLIPSE);
     geometry2.getTransform()->setTranslation(glm::vec3(-50.0f, 200.0f, 0));
     geometry2.setColor(color2);
-    geometry2.setDimensions_inPixels(100, 50,50);
-
+    geometry2.setDimensions_inPixels(200, 200,50);
+    geometry2.setTexture(imagePath2);
 
     geometry3.setGeometryType(GeometryType::QUAD);
     geometry3.getTransform()->setTranslation(glm::vec3(-20.0f, -100.0f, 0));
     geometry3.setColor(color3);
-    geometry3.setDimensions_inPixels(80, 200,50);
-
+    geometry3.setDimensions_inPixels(200, 200,50);
+    geometry3.setTexture(imagePath1);
 
     float angle = 0;
     while (!glfwWindowShouldClose(window))
@@ -100,13 +109,12 @@ int main(void)
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-        //geometry1.getTransform()->setRotation(glm::vec3(0, 0, angle));
-
+       // geometry1.getTransform()->setRotation(glm::vec3(angle, 0, 0));
         geometry1.OnRender();
         //geometry2.getTransform()->setRotation(glm::vec3(0, angle, 0));
-        //geometry2.OnRender();
-        //geometry3.getTransform()->setRotation(glm::vec3(-angle, 0, 0));
-        //geometry3.OnRender();
+        geometry2.OnRender();
+        //geometry3.getTransform()->setRotation(glm::vec3(0, 0, angle));
+        geometry3.OnRender();
 
 
 

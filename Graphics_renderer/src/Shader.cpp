@@ -173,6 +173,13 @@ void Shader::setUniform1i(const std::string& u_name, unsigned int value) const
 	glCall(glUniform1i(location, value));
 }
 
+void Shader::setUniform1f(const std::string& u_name,float value) const
+{
+	Bind(); // use the program
+	glCall(unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str()));
+	glCall(glUniform1f(location, value));
+}
+
 void Shader::setUniformMat4(const std::string& u_name, const glm::mat4& mat) const
 {
 	Bind(); // use the program

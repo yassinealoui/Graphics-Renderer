@@ -4,5 +4,5 @@ enum GeometryType
 {
 	QUAD,
 	TRIANGLE,
-	CIRCLE
+	ELLIPSE
 };

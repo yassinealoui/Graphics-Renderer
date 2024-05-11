@@ -30,6 +30,7 @@ public:
 
 	void setUniform4f(const std::string& u_name, float v0, float v1, float v2, float v3) const;
 	void setUniform1i(const std::string& u_name, unsigned int value) const;
+	void setUniform1f(const std::string& u_name, float value) const;
 	void setUniformMat4(const std::string& u_name, const glm::mat4& mat) const;
 	void setUniform_random_4f(const std::string& u_name) const;
 };

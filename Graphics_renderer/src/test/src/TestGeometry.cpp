@@ -14,11 +14,14 @@
 #define CIRCLE_SHADER "resources/shader/circle.shader"
 
 
+#define whiteImage "resources/images/white.png" 
+
+
 namespace test
 {
 
 	TestGeometry::TestGeometry(float width, float height, float depth,GeometryType type,RenderContext renderContext) 
-		:m_Dimensions(width,height,depth),m_type(type),m_RenderContext(renderContext)
+		:m_Dimensions(width,height,depth),m_type(type),m_RenderContext(renderContext),m_TintIntensity(1.0)
 	{
 		/*m_Color = glm::vec4(
 			renderContext.m_ClearColor[0],
@@ -44,6 +47,7 @@ namespace test
 
 		m_Shader = std::make_shared<Shader>(BASIC_SHADER);
 		m_Shader->setUniform4f("u_color", m_Color.r, m_Color.g, m_Color.b, m_Color.a);
+		setTexture(whiteImage, 1.0f,GL_NEAREST);
 
 		m_Transform = std::make_shared<Transform>();
 
@@ -65,7 +69,7 @@ namespace test
 		
 		switch (m_type)
 		{
-		case GeometryType::CIRCLE://just return a Quad and the shader will create the circle
+		case GeometryType::ELLIPSE://just return a Quad and the shader will create the circle
 			length = 20; // don't forget to update this when changing the Verteces !!!
 			return verteces = new float[] {
 				-width / 2, -height / 2, 0, 0, 0,   // 0
@@ -120,16 +124,6 @@ namespace test
 	}
 
 
-
-
-
-
-
-
-
-
-
-
 	void TestGeometry::setDimensions_inPixels(float width, float height, float depth)
 	{
 		m_Dimensions = Dimensions(width, height,depth);
@@ -141,6 +135,24 @@ namespace test
 	{
 
 	}
+
+	//texture slot is 0 by default
+	void TestGeometry::setTexture(std::string imagePath, float tintIntensity , GLint texture_filter_param )
+	{
+		m_TintIntensity = tintIntensity;
+		unsigned int texSlot = 0;
+		m_Texture = std::make_shared<Texture>(imagePath, texSlot, texture_filter_param);
+		m_Shader->setUniform1i("u_Texture", texSlot);
+	}
+
+
+
+
+
+
+
+
+
 
 	bool once = true;
 	//clean on render (globalize proj..etc)
@@ -160,7 +172,7 @@ namespace test
 
 
 		//get this section out of OnRender
-		if (m_type == GeometryType::CIRCLE)
+		if (m_type == GeometryType::ELLIPSE)
 		{
 			m_Shader = std::make_shared<Shader>(CIRCLE_SHADER);
 		}
@@ -168,7 +180,7 @@ namespace test
 			m_Shader = std::make_shared<Shader>(BASIC_SHADER);
 		}
 		m_Shader->setUniform4f("u_color", m_Color.r, m_Color.g, m_Color.b, m_Color.a);
-
+		
 
 		glm::mat4 rotation_around_x_axis = glm::mat4(
 			1.0f, 0.0f, 0.0f, 0.0f, 
@@ -222,8 +234,9 @@ namespace test
 		m_Shader->setUniformMat4("u_MVP", mvp);
 
 
+		m_Shader->setUniform1f("u_TintIntensity", m_TintIntensity);
 
-
+		m_Texture->Bind();
 		Renderer renderer(glm::vec4(0));
 		renderer.draw(*m_Layout,*m_VBO,*m_VAO, *m_IBO, *m_Shader);
 	};

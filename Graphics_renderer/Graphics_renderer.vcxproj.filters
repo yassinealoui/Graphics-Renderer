@@ -1045,6 +1045,12 @@
     <Image Include="resources\images\kaguya.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\images\white.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\images\grey_girl.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\glm\detail\func_common.inl">

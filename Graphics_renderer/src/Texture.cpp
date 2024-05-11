@@ -11,7 +11,7 @@
 
 //Todo:: add glCall() for debugging
 
-Texture::Texture(std::string imageFilePath,unsigned int slot):m_TexSlot(slot)
+Texture::Texture(std::string imageFilePath,unsigned int slot,GLint texture_filter_param):m_TexSlot(slot)
 {
 	int x, y, n;
 
@@ -30,8 +30,8 @@ Texture::Texture(std::string imageFilePath,unsigned int slot):m_TexSlot(slot)
 
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP));
 	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP));
-	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, texture_filter_param));
+	glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, texture_filter_param));
 
 	glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_ImageData));
 
