@@ -59,9 +59,17 @@ namespace test
 		void setDimensions_inPixels(float width, float height, float depth);
 		void setDimensions_inUnits(float width, float height);
 
-
-
 		void setTexture(std::string imagePath, float tintIntensity = 1.0, GLint texture_filter_param = GL_LINEAR);
+
+		void set_Is_rotating_around_center_of_geometry(bool ans) {
+			m_Is_rotating_around_center_of_geometry = ans;
+		}
+
+		bool get_Is_rotating_around_center_of_geometry() const
+		{
+			return m_Is_rotating_around_center_of_geometry;
+		}
+
 	public:
 		int pixels_per_unit;
 
@@ -74,6 +82,7 @@ namespace test
 		unsigned int* getIndeces(int& indeces_count, float* verteces);
 
 	private:
+		bool m_Is_rotating_around_center_of_geometry;
 		RenderContext m_RenderContext;
 		GeometryType m_type;
 		std::shared_ptr < Texture> m_Texture;

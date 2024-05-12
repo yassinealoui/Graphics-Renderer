@@ -1,18 +1,27 @@
 #shader Vertex
-#version 330 core 
+#version 330 core
 
-layout (location = 0) in vec4 position;
-layout (location = 1) in vec2 texCoord;
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 texCoord;
 
 out vec2 v_TexCoord;
 uniform mat4 u_MVP;
 uniform mat4 u_Rotation;
+
+uniform bool u_rotate_around_center_of_geometry;
 void main()
 {
-	gl_Position = u_Rotation * u_MVP * position;
+	if (u_rotate_around_center_of_geometry)
+	{
+		gl_Position = u_MVP * u_Rotation * position;
+	}
+	else
+	{
+		gl_Position = u_Rotation * u_MVP * position;
+	}
+
 	v_TexCoord = texCoord;
 };
-
 
 #shader Fragment
 #version 330 core

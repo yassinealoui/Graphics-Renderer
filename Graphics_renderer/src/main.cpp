@@ -89,37 +89,49 @@ int main(void)
     geometry1.setColor(color1);
     geometry1.setDimensions_inPixels(100, 100,0);
     geometry1.setTexture(imagePath2, tintIntensity);
+    geometry1.set_Is_rotating_around_center_of_geometry(true);
 
     geometry2.setGeometryType(GeometryType::ELLIPSE);
     geometry2.getTransform()->setTranslation(glm::vec3(-50.0f, 200.0f, 0));
     geometry2.setColor(color2);
     geometry2.setDimensions_inPixels(200, 200,50);
     geometry2.setTexture(imagePath2);
+    geometry2.set_Is_rotating_around_center_of_geometry(true);
+   
 
     geometry3.setGeometryType(GeometryType::QUAD);
-    geometry3.getTransform()->setTranslation(glm::vec3(-20.0f, -100.0f, 0));
+    geometry3.getTransform()->setTranslation(glm::vec3(-100.0f, -100.0f, 0));
     geometry3.setColor(color3);
     geometry3.setDimensions_inPixels(200, 200,50);
-    geometry3.setTexture(imagePath1);
+    geometry3.set_Is_rotating_around_center_of_geometry(false);
+   // geometry3.setTexture(imagePath1);
 
     float angle = 0;
+    float step = 0;
     while (!glfwWindowShouldClose(window))
     {
         renderer.clear();
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-       // geometry1.getTransform()->setRotation(glm::vec3(angle, 0, 0));
+        geometry1.getTransform()->setRotation(glm::vec3(angle, 0, 0));
         geometry1.OnRender();
-        //geometry2.getTransform()->setRotation(glm::vec3(0, angle, 0));
+        geometry2.getTransform()->setRotation(glm::vec3(0, angle, 0));
         geometry2.OnRender();
-        //geometry3.getTransform()->setRotation(glm::vec3(0, 0, angle));
+
+
+       // geometry3.getTransform()->setTranslation(glm::vec3(step, 0, 0));
+        geometry3.getTransform()->setRotation(glm::vec3(0, 0, angle));
         geometry3.OnRender();
 
 
 
         angle += 1;
-
+        step += 1;
+        if (step > 400)
+        {
+            step = 0;
+        }
         ImGui_ShortCut::ImGui_Frame_End();
         glCall(glfwSwapBuffers(window));
         glCall(glfwPollEvents());

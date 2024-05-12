@@ -8,6 +8,7 @@
 //TODO:: store the verteces to avoid redundant calculation
 // TODO: impliment rotation around a vector not just x , y , z axis
 // TODO: switch to units system not pixels
+// TODO: create attribute to track the current position of the player (not translation)
 // the values of cos and sin are not 100% accurate test it with 90° in rad
 
 #define BASIC_SHADER "resources/shader/shader.shader"
@@ -181,6 +182,8 @@ namespace test
 		}
 		m_Shader->setUniform4f("u_color", m_Color.r, m_Color.g, m_Color.b, m_Color.a);
 		
+		
+
 
 		glm::mat4 rotation_around_x_axis = glm::mat4(
 			1.0f, 0.0f, 0.0f, 0.0f, 
@@ -209,6 +212,7 @@ namespace test
 
 		m_VBO = std::make_shared<VertexBuffer>(verteces, sizeof(verteces) * length);
 		
+		m_Shader->setUniform1i("u_rotate_around_center_of_geometry", m_Is_rotating_around_center_of_geometry);
 
 
 
@@ -235,6 +239,7 @@ namespace test
 
 
 		m_Shader->setUniform1f("u_TintIntensity", m_TintIntensity);
+
 
 		m_Texture->Bind();
 		Renderer renderer(glm::vec4(0));
