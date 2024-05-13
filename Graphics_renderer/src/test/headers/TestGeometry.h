@@ -70,6 +70,9 @@ namespace test
 			return m_Is_rotating_around_center_of_geometry;
 		}
 
+		glm::vec3 getPivot() const { return m_Pivot; };
+		void setPivot(glm::vec3 pivot) {m_Pivot = pivot;}
+
 	public:
 		int pixels_per_unit;
 
@@ -82,6 +85,7 @@ namespace test
 		unsigned int* getIndeces(int& indeces_count, float* verteces);
 
 	private:
+		glm::vec3 m_Pivot;
 		bool m_Is_rotating_around_center_of_geometry;
 		RenderContext m_RenderContext;
 		GeometryType m_type;

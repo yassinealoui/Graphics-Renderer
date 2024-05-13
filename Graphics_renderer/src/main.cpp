@@ -72,6 +72,8 @@ int main(void)
     test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, geometryRenderContext);
     test::TestGeometry geometry2 = testScene.AddGeometry("ojbect2", GeometryType::QUAD, geometryRenderContext);
     test::TestGeometry geometry3 = testScene.AddGeometry("ojbect3", GeometryType::QUAD, geometryRenderContext);
+    
+    test::TestGeometry geometry4 = testScene.AddGeometry("ojbect4", GeometryType::ELLIPSE, geometryRenderContext);
 
     glm::vec4 color0(1, 1, 1, 1.0f);
     //glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
@@ -85,26 +87,32 @@ int main(void)
 
 
     geometry1.setGeometryType(GeometryType::TRIANGLE);
-    geometry1.getTransform()->setTranslation(glm::vec3(-200.0f, 200.0f, 0));
+    geometry1.getTransform()->setTranslation(glm::vec3(0, 200.0f, 0));
     geometry1.setColor(color1);
     geometry1.setDimensions_inPixels(100, 100,0);
     geometry1.setTexture(imagePath2, tintIntensity);
-    geometry1.set_Is_rotating_around_center_of_geometry(true);
+    geometry1.setPivot(glm::vec3(0, 200, 0));
 
     geometry2.setGeometryType(GeometryType::ELLIPSE);
-    geometry2.getTransform()->setTranslation(glm::vec3(-50.0f, 200.0f, 0));
+    geometry2.getTransform()->setTranslation(glm::vec3(0,0, 0));
     geometry2.setColor(color2);
     geometry2.setDimensions_inPixels(200, 200,50);
     geometry2.setTexture(imagePath2);
-    geometry2.set_Is_rotating_around_center_of_geometry(true);
-   
+    geometry2.setPivot(glm::vec3(120, 0, 0));
+
+
+    geometry4.setGeometryType(GeometryType::ELLIPSE);
+    geometry4.getTransform()->setTranslation(glm::vec3(120, 0, 0));
+    geometry4.setColor(color1);
+    geometry4.setDimensions_inPixels(10, 10, 0);
+    geometry4.setPivot(glm::vec3(0, 0, 0));
+
 
     geometry3.setGeometryType(GeometryType::QUAD);
     geometry3.getTransform()->setTranslation(glm::vec3(-100.0f, -100.0f, 0));
     geometry3.setColor(color3);
     geometry3.setDimensions_inPixels(200, 200,50);
-    geometry3.set_Is_rotating_around_center_of_geometry(false);
-   // geometry3.setTexture(imagePath1);
+    geometry3.setPivot(glm::vec3(120, 0, 0));
 
     float angle = 0;
     float step = 0;
@@ -116,7 +124,7 @@ int main(void)
 
         geometry1.getTransform()->setRotation(glm::vec3(angle, 0, 0));
         geometry1.OnRender();
-        geometry2.getTransform()->setRotation(glm::vec3(0, angle, 0));
+        geometry2.getTransform()->setRotation(glm::vec3(0, 0, angle));
         geometry2.OnRender();
 
 
@@ -124,7 +132,7 @@ int main(void)
         geometry3.getTransform()->setRotation(glm::vec3(0, 0, angle));
         geometry3.OnRender();
 
-
+        geometry4.OnRender();
 
         angle += 1;
         step += 1;

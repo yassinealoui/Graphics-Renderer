@@ -237,6 +237,11 @@ namespace test
 		mvp = proj * view * model;
 		m_Shader->setUniformMat4("u_MVP", mvp);
 
+		glm::mat4 transPivot = proj * view *glm::translate(identity, m_Pivot);
+		
+		m_Shader->setUniformMat4("u_TransPivot", transPivot);
+
+		//mathUtils::Matrix::print_mat<glm::mat4>(transPivot, "tranlation matrix by the pivot");
 
 		m_Shader->setUniform1f("u_TintIntensity", m_TintIntensity);
 

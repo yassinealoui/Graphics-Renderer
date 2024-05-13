@@ -21,7 +21,7 @@ namespace mathUtils {
 	public:
 		//use it on non empty matrix
 		template<typename T>
-		void print_mat(const T & mat, const std::string& msg)
+		static void print_mat(const T & mat, const std::string& msg)
 		{
 			if (mat.length() == 0 || mat[0].length() == 0)
 			{
