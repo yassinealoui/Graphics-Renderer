@@ -33,4 +33,5 @@ public:
 	void setUniform1f(const std::string& u_name, float value) const;
 	void setUniformMat4(const std::string& u_name, const glm::mat4& mat) const;
 	void setUniform_random_4f(const std::string& u_name) const;
+	void setUniform4fv(const std::string& u_name, const glm::vec4& vec) const;
 };

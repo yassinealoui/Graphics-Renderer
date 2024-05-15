@@ -29,6 +29,7 @@ namespace test
 	class TestGeometry : public Test
 	{
 	public:
+		TestGeometry(const RenderContext& renderContext);
 		TestGeometry(float width, float height, float depth, GeometryType type, RenderContext renderContext);
 		~TestGeometry();
 
@@ -39,29 +40,31 @@ namespace test
 
 
 		std::shared_ptr<Transform> getTransform() const { return m_Transform; };
-		void setTransform(Transform transform) { *m_Transform = transform; };
+		TestGeometry& setTransform(Transform transform) { *m_Transform = transform; return *this; };
 
 
 		std::shared_ptr <Texture> getTexture() const { return m_Texture; };
-		void setTexture(Texture texture, float tintIntensity = 1.0)
+		TestGeometry& setTexture(Texture texture, float tintIntensity = 1.0)
 		{
 			m_TintIntensity = tintIntensity;
 			*m_Texture = texture;
+
+			return *this;
 		};
 
 		GeometryType getGeometryType() const { return m_type; };
-		void setGeometryType(GeometryType type) { m_type = type; };
+		TestGeometry& setGeometryType(GeometryType type) { m_type = type;return *this; };
 
 
-		void setColor(glm::vec4 color);
+		TestGeometry& setColor(glm::vec4 color);
 
 
-		void setDimensions_inPixels(float width, float height, float depth);
-		void setDimensions_inUnits(float width, float height);
+		TestGeometry& setDimensions_inPixels(float width, float height, float depth = 0);
+		TestGeometry& setDimensions_inUnits(float width, float height , float depth = 0);
 
-		void setTexture(std::string imagePath, float tintIntensity = 1.0, GLint texture_filter_param = GL_LINEAR);
+		TestGeometry& setTexture(std::string imagePath, float tintIntensity = 1.0, GLint texture_filter_param = GL_LINEAR);
 
-		void set_Is_rotating_around_center_of_geometry(bool ans) {
+		TestGeometry& set_Is_rotating_around_center_of_geometry(bool ans) {
 			m_Is_rotating_around_center_of_geometry = ans;
 		}
 
@@ -71,7 +74,7 @@ namespace test
 		}
 
 		glm::vec3 getPivot() const { return m_Pivot; };
-		void setPivot(glm::vec3 pivot) {m_Pivot = pivot;}
+		TestGeometry& setPivot(glm::vec3 pivot) { m_Pivot = pivot; return *this; }
 
 	public:
 		int pixels_per_unit;
@@ -83,7 +86,11 @@ namespace test
 		float* getVerteces(int& length, float width, float height, float depth);
 		//make verteces a memeber variable
 		unsigned int* getIndeces(int& indeces_count, float* verteces);
-
+		void updateShader();
+		void updateRotationMatrix();
+		void updateVertecesAndIndeces();
+		void updateMVPmatrix();
+		void updatePivotPtProjMatrix();
 	private:
 		glm::vec3 m_Pivot;
 		bool m_Is_rotating_around_center_of_geometry;

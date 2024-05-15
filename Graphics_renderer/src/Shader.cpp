@@ -187,6 +187,16 @@ void Shader::setUniformMat4(const std::string& u_name, const glm::mat4& mat) con
 	glCall(glUniformMatrix4fv(location,1,GL_FALSE, &mat[0][0]));
 }
 
+void Shader::setUniform4fv(const std::string& u_name, const glm::vec4& vec) const
+{
+	Bind(); // use the program
+	glCall(unsigned int location = glGetUniformLocation(m_renderID, u_name.c_str()));
+	glCall(glUniform4fv(location,1,&vec[0]));
+}
+
+
+
+
 void Shader::setUniform_random_4f(const std::string& u_name) const
 {
 	Bind(); // use the program

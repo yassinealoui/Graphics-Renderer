@@ -5,14 +5,24 @@ layout(location = 0) in vec4 position;
 layout(location = 1) in vec2 texCoord;
 
 out vec2 v_TexCoord;
-uniform mat4 u_MVP;
-uniform mat4 u_TransPivot;
+
+uniform mat4 u_Model;
+uniform mat4 u_View;
+uniform mat4 u_Proj;
+
+uniform mat4 u_Pivot_proj;
 uniform mat4 u_Rotation;
 
-uniform bool u_rotate_around_center_of_geometry;
+mat4 MVP;
+mat4 transPivot;
+
 void main()
 {
-	gl_Position = u_TransPivot * u_Rotation * inverse(u_TransPivot)  * u_MVP  * position;
+	MVP = u_Proj * u_View * u_Model;// order matters
+
+	transPivot = u_Proj * u_View * u_Pivot_proj;
+
+	gl_Position = transPivot * u_Rotation * inverse(transPivot) * MVP * position;
 
 	v_TexCoord = texCoord;
 };

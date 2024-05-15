@@ -65,8 +65,7 @@ int main(void)
     ImGui_ShortCut::ImGui_init(window);
 
 
-    float geometry_clear_color[] = { 0.9f, 0.7f, 0.5f, 1 };
-    RenderContext geometryRenderContext(geometry_clear_color, window_Width, window_height, nearPlane_z, farPlane_z);
+    RenderContext geometryRenderContext(window_Width, window_height, nearPlane_z, farPlane_z);
 
     test::TestScene testScene;
     test::TestGeometry geometry1 = testScene.AddGeometry("ojbect1", GeometryType::QUAD, geometryRenderContext);
@@ -86,33 +85,39 @@ int main(void)
     float tintIntensity = 0.3f;
 
 
-    geometry1.setGeometryType(GeometryType::TRIANGLE);
-    geometry1.getTransform()->setTranslation(glm::vec3(0, 200.0f, 0));
-    geometry1.setColor(color1);
-    geometry1.setDimensions_inPixels(100, 100,0);
-    geometry1.setTexture(imagePath2, tintIntensity);
-    geometry1.setPivot(glm::vec3(0, 200, 0));
+    geometry1
+        .setGeometryType(GeometryType::QUAD)
+        .setColor(color1)
+        .setDimensions_inUnits(2, 2)
+        .setTexture(imagePath2, tintIntensity)
+        .setPivot(glm::vec3(0, 200, 0))
+        .getTransform()->setTranslation(glm::vec3(0, 200.0f, 0));
 
-    geometry2.setGeometryType(GeometryType::ELLIPSE);
-    geometry2.getTransform()->setTranslation(glm::vec3(0,0, 0));
-    geometry2.setColor(color2);
-    geometry2.setDimensions_inPixels(200, 200,50);
-    geometry2.setTexture(imagePath2);
-    geometry2.setPivot(glm::vec3(120, 0, 0));
-
-
-    geometry4.setGeometryType(GeometryType::ELLIPSE);
-    geometry4.getTransform()->setTranslation(glm::vec3(120, 0, 0));
-    geometry4.setColor(color1);
-    geometry4.setDimensions_inPixels(10, 10, 0);
-    geometry4.setPivot(glm::vec3(0, 0, 0));
+    geometry2
+        .setGeometryType(GeometryType::ELLIPSE)
+        .setColor(color2)
+        .setDimensions_inUnits(2.1, 2.1)
+        .setTexture(imagePath2)
+        .setPivot(glm::vec3(120, 0, 0))
+        .getTransform()->setTranslation(glm::vec3(0, 0, 0));
 
 
-    geometry3.setGeometryType(GeometryType::QUAD);
-    geometry3.getTransform()->setTranslation(glm::vec3(-100.0f, -100.0f, 0));
-    geometry3.setColor(color3);
-    geometry3.setDimensions_inPixels(200, 200,50);
-    geometry3.setPivot(glm::vec3(120, 0, 0));
+
+    geometry3
+        .setGeometryType(GeometryType::QUAD)
+        .setColor(color3)
+        .setDimensions_inPixels(200, 200, 50)
+        .setPivot(glm::vec3(120, 0, 0))
+        .getTransform()->setTranslation(glm::vec3(-100.0f, -100.0f, 0));
+    
+    geometry4
+        .setGeometryType(GeometryType::ELLIPSE)
+        .setColor(color1)
+        .setDimensions_inPixels(10, 10, 0)
+        .setPivot(glm::vec3(0, 0, 0))
+        .getTransform()->setTranslation(glm::vec3(120, 0, 0));
+
+
 
     float angle = 0;
     float step = 0;
