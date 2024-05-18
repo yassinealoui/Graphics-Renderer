@@ -1037,6 +1037,9 @@
     <ClInclude Include="src\test\headers\RenderContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="headers\Esthetics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="resources\shader\shader.shader" />

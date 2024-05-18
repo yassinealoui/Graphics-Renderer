@@ -76,6 +76,25 @@ namespace test
 		glm::vec3 getPivot() const { return m_Pivot; };
 		TestGeometry& setPivot(glm::vec3 pivot) { m_Pivot = pivot; return *this; }
 
+
+		//higher abstraction for chaining setters
+		TestGeometry& setTranslation(const glm::vec3& translation)
+		{ 
+			getTransform()->setTranslation(translation);
+			return *this;
+		};
+		TestGeometry& setRotation(const glm::vec3& rotation)
+		{ 
+			getTransform()->setRotation(rotation);
+			return *this;
+		};
+		TestGeometry& setScale(const glm::vec3& scale)
+		{ 
+			getTransform()->setScale(scale);
+			return *this;
+		};
+
+
 	public:
 		int pixels_per_unit;
 

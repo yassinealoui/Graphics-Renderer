@@ -26,7 +26,7 @@
 #include "TestScene.h"
 #include "GeometryType.h"
 #include "Transform.h"
-
+#include "Esthetics.h"
 
 #define Enable  1;
 #define Log(x) std::cout << x << std::endl;
@@ -74,48 +74,42 @@ int main(void)
     
     test::TestGeometry geometry4 = testScene.AddGeometry("ojbect4", GeometryType::ELLIPSE, geometryRenderContext);
 
-    glm::vec4 color0(1, 1, 1, 1.0f);
-    //glm::vec4 color1(0.678f, 0.847f, 0.902f, 1.0f);
-    //glm::vec4 color2(0.278f, 0.922f, 0.796f, 0.5f);
-    //glm::vec4 color3(0.714f, 0.537f, 0.169f, 0.9f);
-    glm::vec4 color1(1, 0, 0, 1.0f);
-    glm::vec4 color2(0, 1, 0, 1.0f);
-    glm::vec4 color3(0, 1, 1, 1.0f);
 
     float tintIntensity = 0.3f;
 
+    
 
     geometry1
         .setGeometryType(GeometryType::QUAD)
-        .setColor(color1)
+        .setColor(Color::get(_Color::GOLD))
         .setDimensions_inUnits(2, 2)
         .setTexture(imagePath2, tintIntensity)
         .setPivot(glm::vec3(0, 200, 0))
-        .getTransform()->setTranslation(glm::vec3(0, 200.0f, 0));
+        .setTranslation(glm::vec3(0, 200.0f, 0));
 
     geometry2
         .setGeometryType(GeometryType::ELLIPSE)
-        .setColor(color2)
+        .setColor(Color::get(_Color::OLIVE))
         .setDimensions_inUnits(2.1, 2.1)
         .setTexture(imagePath2)
         .setPivot(glm::vec3(120, 0, 0))
-        .getTransform()->setTranslation(glm::vec3(0, 0, 0));
+        .setTranslation(glm::vec3(0, 0, 0));
 
 
 
     geometry3
         .setGeometryType(GeometryType::QUAD)
-        .setColor(color3)
+        .setColor(Color::get(_Color::INDIGO))
         .setDimensions_inPixels(200, 200, 50)
         .setPivot(glm::vec3(120, 0, 0))
-        .getTransform()->setTranslation(glm::vec3(-100.0f, -100.0f, 0));
+        .setTranslation(glm::vec3(-100.0f, -100.0f, 0));
     
     geometry4
         .setGeometryType(GeometryType::ELLIPSE)
-        .setColor(color1)
+        .setColor(Color::get(_Color::LIME))
         .setDimensions_inPixels(10, 10, 0)
         .setPivot(glm::vec3(0, 0, 0))
-        .getTransform()->setTranslation(glm::vec3(120, 0, 0));
+        .setTranslation(glm::vec3(120, 0, 0));
 
 
 
@@ -127,17 +121,14 @@ int main(void)
         ImGui_ShortCut::ImGui_NewFrame_Begin();
 
 
-        geometry1.getTransform()->setRotation(glm::vec3(angle, 0, 0));
-        geometry1.OnRender();
-        geometry2.getTransform()->setRotation(glm::vec3(0, 0, angle));
-        geometry2.OnRender();
+        geometry1.setRotation(glm::vec3(angle, 0, 0)).OnRender();
 
+        geometry2.setRotation(glm::vec3(0, 0, angle)).OnRender();
 
-       // geometry3.getTransform()->setTranslation(glm::vec3(step, 0, 0));
-        geometry3.getTransform()->setRotation(glm::vec3(0, 0, angle));
-        geometry3.OnRender();
+        geometry3.setRotation(glm::vec3(0, 0, angle)).OnRender();
 
         geometry4.OnRender();
+
 
         angle += 1;
         step += 1;

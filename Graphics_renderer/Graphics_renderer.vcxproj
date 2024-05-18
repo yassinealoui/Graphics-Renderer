@@ -170,6 +170,7 @@
     <ClCompile Include="vendor\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="headers\Esthetics.h" />
     <ClInclude Include="headers\GLDebugUtils.h" />
     <ClInclude Include="headers\IndexBuffer.h" />
     <ClInclude Include="headers\Renderer.h" />
